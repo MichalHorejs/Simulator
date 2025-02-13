@@ -32,6 +32,27 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+tasks.register('npmInstall', Exec) {
+	workingDir 'src/main/client'
+	commandLine 'npm', 'install'
+}
+
+tasks.register('npmBuild', Exec) {
+	dependsOn tasks.named('npmInstall')
+	workingDir 'src/main/client'
+	commandLine 'npm', 'run', 'build'
+}
+
+tasks.register('copyFrontend', Copy) {
+	dependsOn tasks.named('npmBuild')
+	from 'src/main/client/dist'
+	into 'src/main/resources/static'
+}
+
+bootJar {
+	dependsOn tasks.named('copyFrontend')
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

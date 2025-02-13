@@ -10,7 +10,8 @@ function App() {
     useEffect(() => {
         fetch(`${Env.API_BASE_URL}/ping`)
             .then((response) => response.text())
-            .then((body) => console.log(body));
+            .then((body) => console.log(body))
+            .catch((error) => console.error(error));
     }, []);
 
   return (
