@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import {Link} from "react-router-dom";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import {useEffect} from "react";
+import {Env} from "./Env.ts";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+    useEffect(() => {
+        fetch(`${Env.API_BASE_URL}/ping`)
+            .then((response) => response.text())
+            .then((body) => console.log(body));
+    }, []);
 
   return (
     <>
@@ -17,17 +24,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        <Link to='/cake'>Visit /cake</Link>
     </>
   )
 }

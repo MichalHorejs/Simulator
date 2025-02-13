@@ -74,3 +74,6 @@ secrets.yml
 .gradletasknamecache
 .git-hooks/
 node_modules
+
+### Dynamically generated ###
+/src/main/resources/static/
