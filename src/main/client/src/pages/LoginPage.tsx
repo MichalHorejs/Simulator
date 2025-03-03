@@ -16,11 +16,11 @@ function LoginPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
-        try {
-            await login(username, password);
+        const result = await login(username, password);
+        if (result.success) {
             navigate('/');
-        } catch (err) {
-            setError("Wrong username or password");
+        } else {
+            setError(result.message || "Wrong username or password");
         }
     };
 
@@ -29,7 +29,7 @@ function LoginPage() {
             <Container>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
-                        <h2 className="text-center">Please log-in</h2><br/>
+                        <h2 className="text-center">Please log-in:</h2><br/>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId="formUsername" className="mb-3">
                                 <Form.Label column sm={3}>Username</Form.Label>

@@ -20,7 +20,7 @@ public class SpringConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOriginPatterns("*");
+                .allowedOriginPatterns("*"); // todo: handle :5173 allow-origin
     }
 
     @Override

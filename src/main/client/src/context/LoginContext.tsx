@@ -9,15 +9,17 @@ interface AuthResponse {
 
 interface AuthContextType {
     user: string | null;
-    login: (username: string, password: string) => Promise<void>;
-    logout: () => void;
+    login: (username: string, password: string) => Promise<{ success: boolean; message?: string }>;
+    logout: () => Promise<void>;
+    authenticate: (data: AuthResponse) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
-    login: async () => {
+    login: async () => ({success: false}),
+    logout: async () => {
     },
-    logout: () => {
+    authenticate: () => {
     }
 });
 
@@ -37,7 +39,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         }
     }, []);
 
-    const login = async (username: string, password: string): Promise<void> => {
+    const authenticate = (data: AuthResponse) => {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('user', JSON.stringify(data.username));
+        setUser(data.username);
+    };
+
+    const login = async (username: string, password: string): Promise<{ success: boolean; message?: string }> => {
         try {
             const response = await fetch(`${Env.API_BASE_URL}/auth/login`, {
                 method: 'POST',
@@ -53,14 +62,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
             const data: AuthResponse = await response.json();
 
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('refresh_token', data.refresh_token);
-            localStorage.setItem('user', JSON.stringify(data.username));
+            authenticate(data);
+            return {success: true};
 
-            setUser(data.username);
         } catch (error) {
             console.error('Login failed:', error);
-            throw error;
+            return {success: false, message: 'Wrong username or password !'};
         }
     };
 
@@ -86,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout, authenticate }}>
             {children}
         </AuthContext.Provider>
     );
