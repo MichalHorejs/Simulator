@@ -1,22 +1,15 @@
 import './App.css'
-import {useEffect} from "react";
-import {Env} from "./Env.ts";
-import HomePage from "./pages/HomePage.tsx";
+import NavBar from "./components/NavBar/NavBar.tsx";
+import {Outlet} from "react-router-dom";
 
 function App() {
 
-    useEffect(() => {
-        fetch(`${Env.API_BASE_URL}/ping`)
-            .then((response) => response.text())
-            .then((body) => console.log(body))
-            .catch((error) => console.error(error));
-    }, []);
-
     return (
-        <>
-            <HomePage />
-        </>
-    )
+        <div>
+            <NavBar />
+            <Outlet />
+        </div>
+    );
 }
 
 export default App

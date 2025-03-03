@@ -4,6 +4,18 @@
     padding: 5px 10px;
 }
 
-.nav-link-spacing {
-    margin-right: 35px; /* Adjust the value as needed */
+.navbar-text {
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    font-size: 1.2rem;
+}
+
+.first-nav .nav-link {
+    margin-right: 35px;
+}
+
+.navbar-text {
+    font-size: 1.2rem;
 }

@@ -49,7 +49,7 @@ public class AuthenticationService {
 
         savePersonToken(accessToken, refreshToken, person);
 
-        return new AuthenticationResponse(accessToken, refreshToken);
+        return new AuthenticationResponse(accessToken, refreshToken, person.getUsername());
     }
 
     public AuthenticationResponse authenticate(Person request) {
@@ -61,7 +61,7 @@ public class AuthenticationService {
         );
 
         Person person = personRepository.getPersonByUsername(request.getUsername())
-                .orElseThrow(() -> new BadRequestException("Person not found"));
+                .orElseThrow(() -> new BadRequestException("User not found !"));
 
         String accessToken = tokenService.generateAccessToken(person);
         String refreshToken = tokenService.generateRefreshToken(person);
@@ -69,7 +69,7 @@ public class AuthenticationService {
         revokeAllTokens(person);
         savePersonToken(accessToken, refreshToken, person);
 
-        return new AuthenticationResponse(accessToken, refreshToken);
+        return new AuthenticationResponse(accessToken, refreshToken, person.getUsername());
     }
 
     public ResponseEntity<?> refreshToken(
@@ -95,7 +95,7 @@ public class AuthenticationService {
             revokeAllTokens(person);
             savePersonToken(accessToken, refreshToken, person);
 
-            return new ResponseEntity<>(new AuthenticationResponse(accessToken, refreshToken), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthenticationResponse(accessToken, refreshToken, username), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
