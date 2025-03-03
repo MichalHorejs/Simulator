@@ -32,7 +32,7 @@ function NavBar() {
                             <>
                                 <Nav.Link as={Link} to="/login">Sign In</Nav.Link>
                                 <span className="navbar-text mx-2">/</span>
-                                <Nav.Link as={Link} to="/signup" className="rounded-border">Sign Up</Nav.Link>
+                                <Nav.Link as={Link} to="/register" className="rounded-border">Sign Up</Nav.Link>
                             </>
                         )}
                     </Nav>

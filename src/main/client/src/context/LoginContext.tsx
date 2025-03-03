@@ -78,7 +78,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         } catch (error) {
             console.error('Error calling logout endpoint:', error);
         } finally {
-            // Clear tokens and user info from local storage and state
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
             localStorage.removeItem('user');

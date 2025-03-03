@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import {AuthProvider} from "./context/LoginContext.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <LoginPage />,
+            },
+            {
+                path: '/register',
+                element: <RegisterPage />
             }
         ]
     }

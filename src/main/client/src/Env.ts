@@ -1,5 +1,3 @@
-// Env.ts
-
 const { VITE_API_BASE_URL, ...otherViteConfig } = import.meta.env;
 
 export const Env = {

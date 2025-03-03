@@ -4,7 +4,7 @@ import '../index.css'
 import {FormEvent, useState} from "react";
 import {useAuth} from "../context/LoginContext.tsx";
 import {useNavigate} from "react-router-dom";
-
+// todo: handle expired tokens
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
