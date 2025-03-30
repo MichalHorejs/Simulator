@@ -6,35 +6,34 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="1" author="horejs">
-        <createTable tableName="token">
+        <createTable tableName="simulation">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
-            <column name="access_token" type="text">
+            <column name="start_time" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="refresh_token" type="text">
-                <constraints nullable="false"/>
+            <column name="end_time" type="timestamp"/>
+            <column name="rating" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
             </column>
-            <column name="logged_out" type="boolean">
+            <column name="difficulty" type="text">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <!-- Add foreign key constraint from token.user_id to users.id -->
-        <addForeignKeyConstraint
-                baseTableName="token"
-                baseColumnNames="person_id"
-                referencedTableName="person"
-                referencedColumnNames="id"
-                constraintName="fk_token_person"
-                onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="simulation"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"
+                                 constraintName="fk_simulation_person"/>
 
-        <createIndex tableName="token" indexName="idx_token_person_id">
+        <createIndex tableName="simulation" indexName="idx_simulation_person_id">
             <column name="person_id"/>
         </createIndex>
     </changeSet>
+
 </databaseChangeLog>

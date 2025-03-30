@@ -14,12 +14,13 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne
+    private Person person;
+
     private String accessToken;
 
     private String refreshToken;
 
     private boolean loggedOut;
 
-    @ManyToOne
-    private Person person;
 }

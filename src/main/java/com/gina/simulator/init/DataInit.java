@@ -2,7 +2,7 @@ package com.gina.simulator.init;
 
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
-import com.gina.simulator.role.Role;
+import com.gina.simulator.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

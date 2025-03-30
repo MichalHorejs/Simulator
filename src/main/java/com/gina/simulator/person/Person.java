@@ -1,6 +1,6 @@
 package com.gina.simulator.person;
 
-import com.gina.simulator.role.Role;
+import com.gina.simulator.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +33,10 @@ public class Person implements UserDetails {
     private String password;
 
     private Role role;
+
+//    @OneToMany
+//    @JsonIgnoreProperties("person")
+//    private List<Simulation> simulations;
 
 
     @Override

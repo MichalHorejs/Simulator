@@ -3,7 +3,7 @@ package com.gina.simulator.security;
 import com.gina.simulator.exception.BadRequestException;
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
-import com.gina.simulator.role.Role;
+import com.gina.simulator.enums.Role;
 import com.gina.simulator.security.models.AuthenticationResponse;
 import com.gina.simulator.token.Token;
 import com.gina.simulator.token.TokenRepository;

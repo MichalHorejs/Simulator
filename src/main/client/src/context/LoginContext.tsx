@@ -8,14 +8,14 @@ interface AuthResponse {
 }
 
 interface AuthContextType {
-    user: string | null;
+    username: string | null;
     login: (username: string, password: string) => Promise<{ success: boolean; message?: string }>;
     logout: () => Promise<void>;
     authenticate: (data: AuthResponse) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    user: null,
+    username: null,
     login: async () => ({success: false}),
     logout: async () => {
     },
@@ -93,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, authenticate }}>
+        <AuthContext.Provider value={{ username: user, login, logout, authenticate }}>
             {children}
         </AuthContext.Provider>
     );

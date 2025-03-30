@@ -8,7 +8,7 @@ import {useAuth} from "../../context/LoginContext.tsx";
 
 function NavBar() {
 
-    const { user, logout } = useAuth();
+    const { username, logout } = useAuth();
 
     return (
         <Navbar fixed="top" expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
@@ -22,9 +22,9 @@ function NavBar() {
                         <Nav.Link as={Link} to="/leaderboards" className="nav-link-spacing">Leaderboards</Nav.Link>
                     </Nav>
                     <Nav>
-                        { user ? (
+                        { username ? (
                             <>
-                                <Nav.Item className="navbar-text mx-2">{user.toUpperCase()}</Nav.Item>
+                                <Nav.Item className="navbar-text mx-2">{username.toUpperCase()}</Nav.Item>
                                 <span className="navbar-text mx-2">/</span>
                                 <Nav.Link className="rounded-border" onClick={logout}>Logout</Nav.Link>
                             </>
