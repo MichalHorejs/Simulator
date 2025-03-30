@@ -20,7 +20,6 @@ interface Simulation {
 }
 
 interface ActiveSimulationPageProps {
-    user: string;
     onEndSimulation: () => void;
 }
 
