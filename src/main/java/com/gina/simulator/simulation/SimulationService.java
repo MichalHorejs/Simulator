@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -28,8 +29,17 @@ public class SimulationService {
         return simulationRepository.save(simulation);
     }
 
-    public boolean isActive(UUID simulationId) {
+    public boolean isActive(UUID simulationId) { // todo: think if will be used
         Optional<Simulation> simOpt = simulationRepository.findById(simulationId);
         return simOpt.isPresent() && (simOpt.get().getEndTime() == null);
+    }
+
+    @Transactional
+    public Simulation finish(Simulation s) {
+        Simulation simulation = simulationRepository.findById(s.getId())
+                .orElseThrow(() -> new BadRequestException("Simulation not found in DB."));
+        simulation.setEndTime(LocalDateTime.now());
+        simulation.setRating(new Random().nextInt(1000) + 1); // todo: compute
+        return simulationRepository.save(simulation);
     }
 }

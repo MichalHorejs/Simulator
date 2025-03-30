@@ -23,4 +23,9 @@ public class SimulationApi {
     ) {
         return simulationService.startSimulation(simulation);
     }
+
+    @PostMapping("finish")
+    public Simulation finishSimulation(@RequestBody Simulation simulation) {
+        return simulationService.finish(simulation);
+    }
 }

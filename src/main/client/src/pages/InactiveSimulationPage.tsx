@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../index.css';
 import { useState } from 'react';
-import {startSimulation} from "../api/simulationApi.ts";
+import {startSimulation} from "../api/SimulationApi.ts";
 
 interface InactiveSimulationPageProps {
     user: string;
@@ -15,7 +15,8 @@ function InactiveSimulationPage({ user, onStartSimulation }: InactiveSimulationP
 
     const handleStart = async () => {
         try {
-            const simulation = await startSimulation(user, difficulty);
+            const simulation = await startSimulation(user, difficulty - 1);
+            console.log(simulation);
             localStorage.setItem("simulation", JSON.stringify(simulation));
             onStartSimulation();
         } catch (error) {
