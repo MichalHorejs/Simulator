@@ -3,6 +3,7 @@ import '../index.css'
 import {finishSimulation} from "../api/SimulationApi.ts";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Incidents from "../components/Incidents/Incidents.tsx";
 
 interface Person {
     id: string;
@@ -55,11 +56,15 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
 
     return (
         <div>
-            <p>Simulace běží</p>
-            <Button variant="secondary" type="submit" onClick={handleEndSimulation}>
+            <Incidents difficulty={simulation.difficulty} />
+            <Button variant="secondary" type="submit" onClick={handleEndSimulation} style={{
+                position: "fixed",
+                top: "75px",
+                right: "15px",
+                zIndex: 1000
+            }}>
                 Ukončit simulaci
             </Button>
-            <pre>{JSON.stringify(simulation, null, 2)}</pre>
         </div>
     );
 }

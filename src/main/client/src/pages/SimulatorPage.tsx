@@ -13,13 +13,13 @@ function SimulatorPage() {
     }
 
     return (
-        <div>
+        <>
             {simulationActive ? (
                 <ActiveSimulationPage onEndSimulation={() => setSimulationActive(false)} />
             ) : (
                 <InactiveSimulationPage user={username} onStartSimulation={() => setSimulationActive(true)} />
             )}
-        </div>
+        </>
     )
 }
 
