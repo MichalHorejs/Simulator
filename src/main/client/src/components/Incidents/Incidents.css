@@ -1,7 +1,7 @@
 .incidents {
     width: 20%;
     height: 100vh;
-    overflowY: auto;
+    overflow-y: auto;
     border-right: 3px solid rgb(36, 40, 44);
 
     display: flex;

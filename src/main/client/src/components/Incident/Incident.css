@@ -4,7 +4,7 @@
     box-shadow: 0 2px 5px darkgrey;
     margin: 10px auto 0 auto;
     width: 90%;
-    height: 80px;
+    min-height: 80px;
     color: rgb(96, 106, 113);
 
     display: flex;
@@ -15,4 +15,19 @@
 img {
     width: 35px;
     height: 35px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.incident {
+    animation: fadeIn 2s ease-out;
 }

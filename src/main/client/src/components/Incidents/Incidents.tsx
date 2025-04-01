@@ -44,7 +44,7 @@ function Incidents({ difficulty }: IncidentsProps) {
         const timer = setInterval(() => {
             setIncidents((prev) => {
                 if (prev.length < maxCount) {
-                    return [...prev, generateIncident(prev.length)];
+                    return [generateIncident(prev.length), ...prev];
                 } else {
                     clearInterval(timer);
                     return prev;
