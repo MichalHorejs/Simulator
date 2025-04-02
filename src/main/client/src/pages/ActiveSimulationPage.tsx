@@ -1,9 +1,11 @@
 import Button from "react-bootstrap/Button";
 import '../index.css'
+import './css/ActiveSimulationPage.css'
 import {finishSimulation} from "../api/SimulationApi.ts";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import Incidents from "../components/Incidents/Incidents.tsx";
+import Incidents, {Incident} from "../components/incidents/Incidents.tsx";
+import IncidentDetail from "../components/incident-detail/IncidentDetail.tsx";
 
 interface Person {
     id: string;
@@ -28,6 +30,7 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
 
     const navigate = useNavigate();
     const [simulation, setSimulation] = useState<Simulation | null>(null);
+    const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
 
     useEffect(() => {
         const simulation = localStorage.getItem("simulation");
@@ -55,8 +58,9 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
     }
 
     return (
-        <div>
-            <Incidents difficulty={simulation.difficulty} />
+        <div className="simulation-detail">
+            <Incidents difficulty={simulation.difficulty} simulationId={simulation.id} onSelectIncident={setSelectedIncident} />
+            {selectedIncident && <IncidentDetail incident={selectedIncident} />}
             <Button variant="secondary" type="submit" onClick={handleEndSimulation} style={{
                 position: "fixed",
                 top: "75px",

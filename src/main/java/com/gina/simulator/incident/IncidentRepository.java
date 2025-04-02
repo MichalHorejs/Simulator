@@ -1,4 +1,4 @@
-package com.gina.simulator.simulation;
+package com.gina.simulator.incident;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface SimulationRepository extends JpaRepository<Simulation, UUID> {
+public interface IncidentRepository extends JpaRepository<Incident, UUID> {
 }

@@ -1,5 +1,5 @@
 import {useAuth} from "../context/LoginContext.tsx";
-import SimulatorRedirect from "../components/SimulatorRedirect/SimulatorRedirect.tsx";
+import SimulatorRedirect from "../components/simulator-redirect/SimulatorRedirect.tsx";
 import InactiveSimulationPage from "./InactiveSimulationPage.tsx";
 import {useState} from "react";
 import ActiveSimulationPage from "./ActiveSimulationPage.tsx";
