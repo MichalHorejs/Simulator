@@ -1,0 +1,27 @@
+.incident-detail {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.top-section {
+    display: flex;
+    flex: 1;
+}
+
+.chat-container,
+.form-container {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.map-container {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}

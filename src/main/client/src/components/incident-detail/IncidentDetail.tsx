@@ -1,4 +1,5 @@
 import React from 'react';
+import './IncidentDetail.css'
 import { Incident } from '../incidents/Incidents'; // Upravte cestu dle umístění typu
 
 interface IncidentDetailProps {
@@ -8,12 +9,23 @@ interface IncidentDetailProps {
 const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident }) => {
     return (
         <div className="incident-detail">
-            <h2>Detail Incidentu</h2>
-            <p>ID: {incident.id}</p>
-            <p>Telefonní číslo: {incident.phoneNumber}</p>
-            <p>Stav: {incident.state}</p>
-            <p>Začátek: {incident.startTime}</p>
-            <p>Konec: {incident.endTime}</p>
+            <div className="top-section">
+                <div className="chat-container">
+                    <h3>Chat</h3>
+                </div>
+                <div className="form-container">
+                    <h3>Formulář</h3>
+                </div>
+            </div>
+            <div className="map-container">
+                <h3>Mapa</h3>
+                <h4>Detail Incidentu</h4>
+                <p>ID: {incident.id}</p>
+                <p>Telefonní číslo: {incident.phoneNumber}</p>
+                <p>Stav: {incident.state}</p>
+                <p>Začátek: {incident.startTime}</p>
+                <p>Konec: {incident.endTime}</p>
+            </div>
         </div>
     );
 };
