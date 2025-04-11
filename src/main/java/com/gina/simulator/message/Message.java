@@ -1,8 +1,11 @@
 package com.gina.simulator.message;
 
-import com.gina.simulator.enums.From;
+import com.gina.simulator.enums.Sender;
 import com.gina.simulator.incident.Incident;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +18,7 @@ import java.util.UUID;
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne
@@ -23,7 +26,14 @@ public class Message {
 
     private String message;
 
-    private From from;
+    private Sender sender;
 
     private LocalDateTime timestamp;
+
+    @PrePersist
+    public void ensureId() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import './IncidentDetail.css'
-import { Incident } from '../incidents/Incidents'; // Upravte cestu dle umístění typu
+import { Incident } from '../incidents/Incidents';
+import Chat from "../chat/Chat.tsx"; // Upravte cestu dle umístění typu
 
 interface IncidentDetailProps {
     incident: Incident;
@@ -11,7 +12,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident }) => {
         <div className="incident-detail">
             <div className="top-section">
                 <div className="chat-container">
-                    <h3>Chat</h3>
+                    <Chat key={incident.id} incidentId={incident.id} />
                 </div>
                 <div className="form-container">
                     <h3>Formulář</h3>

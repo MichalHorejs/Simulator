@@ -1,6 +1,6 @@
 package com.gina.simulator.enums;
 
-public enum From {
+public enum Sender {
     USER,
     AI
 }

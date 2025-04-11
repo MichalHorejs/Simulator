@@ -16,7 +16,7 @@
             <column name="message" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="from" type="text">
+            <column name="sender" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="timestamp" type="timestamp">
