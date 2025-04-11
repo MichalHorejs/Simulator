@@ -19,7 +19,7 @@ public class Incident {
     private UUID id;
 
     @ManyToOne
-    Simulation simulation;
+    private Simulation simulation;
 
     private String phoneNumber;
 
