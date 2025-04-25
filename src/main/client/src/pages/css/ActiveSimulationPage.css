@@ -1,7 +1,8 @@
 .simulation-detail {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: calc(100vh - 56px);
+    margin-top: 60px;
 }
 
 .simulation-detail > .incidents {

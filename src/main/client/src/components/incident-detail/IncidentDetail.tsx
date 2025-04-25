@@ -1,7 +1,7 @@
 import React from 'react';
 import './IncidentDetail.css'
 import { Incident } from '../incidents/Incidents';
-import Chat from "../chat/Chat.tsx"; // Upravte cestu dle umístění typu
+import Chat from "../chat/Chat.tsx";
 
 interface IncidentDetailProps {
     incident: Incident;

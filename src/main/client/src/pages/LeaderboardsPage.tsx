@@ -1,8 +1,10 @@
+import './css/LeaderboardsPage.css'
+
 function LeaderboardsPage(){
 
 
     return (
-        <div>
+        <div className="leaderboards-container">
             <p>Leaderboardspage</p><p>Leaderboardspage</p>
 
         </div>

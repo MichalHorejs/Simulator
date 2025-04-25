@@ -8,7 +8,7 @@ export interface Message {
     };
     message: string;
     sender?: string;
-    timestamp?: string;
+    timestamp: string;
 }
 
 const createMessage = async (message: Message): Promise<Message> => {

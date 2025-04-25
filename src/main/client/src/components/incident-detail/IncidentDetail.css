@@ -1,3 +1,4 @@
+/* Kontejner incident-detail je rozdělen do dvou řádků */
 .incident-detail {
     display: flex;
     flex-direction: column;
@@ -5,23 +6,25 @@
     width: 100%;
 }
 
-.top-section {
-    display: flex;
+/* top-section a map-container budou mít stejnou výšku */
+.top-section,
+.map-container {
     flex: 1;
+    overflow: hidden;
 }
 
+/* V top-section chceme rozdělit prostor vodorovně mezi chat-container a form-container */
+.top-section {
+    display: flex;
+    flex-direction: row;
+}
+
+/* chat-container a form-container mají stejné rozměry */
 .chat-container,
 .form-container {
     flex: 1;
-    padding: 10px;
+    /*padding: 10px;*/
     border: 1px solid #ccc;
     box-sizing: border-box;
     height: 100%;
-}
-
-.map-container {
-    flex: 2;
-    padding: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
 }
