@@ -1,6 +1,6 @@
 package com.gina.simulator.simulation;
 
-import com.gina.simulator.exception.BadRequestException;
+import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class SimulationService {
     @Transactional
     public Simulation startSimulation(Simulation simulation) {
         Person person = personRepository.findByUsername(simulation.getPerson().getUsername())
-                .orElseThrow(() -> new BadRequestException("User not found in DB."));
+                .orElseThrow(() -> new EntityNotFoundException(Person.class, simulation.getPerson().getId()));
 
         simulation.setStartTime(LocalDateTime.now());
         simulation.setPerson(person);
@@ -37,7 +37,7 @@ public class SimulationService {
     @Transactional
     public Simulation finish(Simulation s) {
         Simulation simulation = simulationRepository.findById(s.getId())
-                .orElseThrow(() -> new BadRequestException("Simulation not found in DB."));
+                .orElseThrow(() -> new EntityNotFoundException(Simulation.class, s.getId()));
         simulation.setEndTime(LocalDateTime.now());
         simulation.setRating(new Random().nextInt(1000) + 1); // todo: compute
         return simulationRepository.save(simulation);

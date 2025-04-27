@@ -8,6 +8,7 @@
     <include file="db/changelog/simulator-person.xml"/>
     <include file="db/changelog/simulator-token.xml"/>
     <include file="db/changelog/simulator-simulation.xml"/>
+    <include file="db/changelog/simulator-incidentTemplate.xml"/>
     <include file="db/changelog/simulator-incident.xml"/>
     <include file="db/changelog/simulator-message.xml"/>
 </databaseChangeLog>

@@ -36,4 +36,35 @@
             <column name="simulation_id"/>
         </createIndex>
     </changeSet>
+
+    <changeSet id="2" author="horejs">
+        <addColumn tableName="incident">
+            <column name="incident_template_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="incident"
+                baseColumnNames="incident_template_id"
+                constraintName="fk_incident_incident_template"
+                referencedTableName="incident_template"
+                referencedColumnNames="id"/>
+
+        <createIndex indexName="idx_incident_incident_template_id" tableName="incident">
+            <column name="incident_template_id"/>
+        </createIndex>
+
+        <addColumn tableName="incident">
+            <column name="title" type="text"/>
+            <column name="specification" type="text"/>
+            <column name="urgency" type="text"/>
+            <column name="category" type="text"/>
+            <column name="subcategory" type="text"/>
+            <column name="district" type="text"/>
+            <column name="municipality" type="text"/>
+            <column name="longitude" type="text"/>
+            <column name="latitude" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -18,7 +18,6 @@ import java.util.UUID;
 public class Message {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne

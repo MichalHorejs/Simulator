@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="horejs">
+        <createTable tableName="incident_template">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specification" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="urgency" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subcategory" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="district" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="municipality" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,44 +1,24 @@
-package com.gina.simulator.incident;
+package com.gina.simulator.incidentTemplate;
 
 import com.gina.simulator.address.Address;
 import com.gina.simulator.enums.Category;
-import com.gina.simulator.enums.State;
 import com.gina.simulator.enums.Subcategory;
 import com.gina.simulator.enums.Urgency;
-import com.gina.simulator.incidentTemplate.IncidentTemplate;
-import com.gina.simulator.simulation.Simulation;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Incident {
+public class IncidentTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    private Simulation simulation;
-
-    /**  Incident template chosen from data */
-    @ManyToOne
-    private IncidentTemplate incidentTemplate;
-
-    private String phoneNumber;
-
-    private State state;
-
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
-
-    /**  Data chosen by user */
     private String title;
 
     private String specification;
@@ -59,6 +39,4 @@ public class Incident {
             @AttributeOverride(name = "municipality", column = @Column(name = "municipality"))
     })
     private Address address;
-
-
 }

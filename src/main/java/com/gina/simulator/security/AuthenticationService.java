@@ -1,6 +1,7 @@
 package com.gina.simulator.security;
 
 import com.gina.simulator.exception.BadRequestException;
+import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
 import com.gina.simulator.enums.Role;
@@ -61,7 +62,7 @@ public class AuthenticationService {
         );
 
         Person person = personRepository.getPersonByUsername(request.getUsername())
-                .orElseThrow(() -> new BadRequestException("User not found !"));
+                .orElseThrow(() -> new EntityNotFoundException(Person.class, request.getUsername()));
 
         String accessToken = tokenService.generateAccessToken(person);
         String refreshToken = tokenService.generateRefreshToken(person);
@@ -86,7 +87,7 @@ public class AuthenticationService {
         String username = tokenService.extractUsername(token);
 
         Person person = personRepository.getPersonByUsername(username)
-                .orElseThrow(() -> new BadRequestException("Person not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Person.class, username));
 
         if (tokenService.isValidRefreshToken(token, person)){
             String accessToken = tokenService.generateAccessToken(person);

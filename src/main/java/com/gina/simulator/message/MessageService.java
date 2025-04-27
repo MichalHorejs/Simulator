@@ -1,7 +1,7 @@
 package com.gina.simulator.message;
 
 import com.gina.simulator.enums.Sender;
-import com.gina.simulator.exception.BadRequestException;
+import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.incident.Incident;
 import com.gina.simulator.incident.IncidentRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class MessageService {
     @Transactional
     public Message create(Message message) {
         Incident incident = incidentRepository.findById(message.getIncident().getId())
-                .orElseThrow(() -> new BadRequestException("Incident not found in DB."));
+                .orElseThrow(() -> new EntityNotFoundException(Incident.class, message.getIncident().getId()));
 
         message.setIncident(incident);
         messageRepository.save(message);
@@ -38,7 +38,7 @@ public class MessageService {
 
     public List<Message> getMessages(UUID incidentId) {
         Incident incident = incidentRepository.findById(incidentId)
-                .orElseThrow(() -> new BadRequestException("Incident not found in DB."));
+                .orElseThrow(() -> new EntityNotFoundException(Incident.class, incidentId));
 
         return messageRepository.findAllByIncident_IdOrderByTimestampAsc(incident.getId());
     }

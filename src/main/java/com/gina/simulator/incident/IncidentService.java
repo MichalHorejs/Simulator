@@ -1,7 +1,9 @@
 package com.gina.simulator.incident;
 
 import com.gina.simulator.enums.State;
-import com.gina.simulator.exception.BadRequestException;
+import com.gina.simulator.exception.EntityNotFoundException;
+import com.gina.simulator.incidentTemplate.IncidentTemplate;
+import com.gina.simulator.incidentTemplate.IncidentTemplateService;
 import com.gina.simulator.simulation.Simulation;
 import com.gina.simulator.simulation.SimulationRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +20,21 @@ public class IncidentService {
 
     private final SimulationRepository simulationRepository;
     private final IncidentRepository incidentRepository;
+    private final IncidentTemplateService incidentTemplateService;
 
     @Transactional
     public Incident create(UUID simulationId) {
         Simulation simulation = simulationRepository.findById(simulationId)
-                .orElseThrow(() -> new BadRequestException("Simulation not found in DB."));
+                .orElseThrow(() -> new EntityNotFoundException(Simulation.class, simulationId));
+
+        IncidentTemplate incidentTemplate = incidentTemplateService.findRandomTemplate();
 
         Incident incident = new Incident();
         incident.setSimulation(simulation);
         incident.setPhoneNumber(generatePhoneNumber());
         incident.setState(State.INCOMING);
         incident.setStartTime(LocalDateTime.now());
+        incident.setIncidentTemplate(incidentTemplate);
 
         return incidentRepository.save(incident);
     }
