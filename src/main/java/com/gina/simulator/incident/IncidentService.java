@@ -4,9 +4,12 @@ import com.gina.simulator.enums.State;
 import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.incidentTemplate.IncidentTemplateService;
+import com.gina.simulator.integration.Osm.OsmService;
+import com.gina.simulator.integration.features.NearbyFeatures;
 import com.gina.simulator.simulation.Simulation;
 import com.gina.simulator.simulation.SimulationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IncidentService {
@@ -21,6 +25,7 @@ public class IncidentService {
     private final SimulationRepository simulationRepository;
     private final IncidentRepository incidentRepository;
     private final IncidentTemplateService incidentTemplateService;
+    private final OsmService osmService;
 
     @Transactional
     public Incident create(UUID simulationId) {
@@ -28,6 +33,9 @@ public class IncidentService {
                 .orElseThrow(() -> new EntityNotFoundException(Simulation.class, simulationId));
 
         IncidentTemplate incidentTemplate = incidentTemplateService.findRandomTemplate();
+
+        NearbyFeatures nearbyText = osmService.generateNearbyFeatures(incidentTemplate);
+        log.info("\n\nNearby features: {}\n", nearbyText.getNaturals());
 
         Incident incident = new Incident();
         incident.setSimulation(simulation);

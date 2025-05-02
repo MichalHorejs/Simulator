@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import Incident from '../incident/Incident';
 import "./Incidents.css";
 import {createIncident} from "../../api/IncidentApi.ts";
@@ -32,30 +32,32 @@ function Incidents({ simulationId, difficulty, onSelectIncident }: IncidentsProp
     };
 
     useEffect(() => {
+        let active = true;
+        let counter = 0;
         const maxCount = getMaxCount();
-        const timer = setInterval(async () => {
-            setIncidents((prev) => {
-                if (prev.length >= maxCount) {
-                    clearInterval(timer);
-                }
-                return prev;
-            });
-            if (incidents.length < maxCount) {
-                try {
-                    const newIncident = await createIncident(simulationId);
-                    setIncidents((prev) => {
-                        if (prev.length < maxCount) {
-                            return [newIncident, ...prev];
-                        }
-                        return prev;
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
+
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+        const fetchNext = async () => {
+            if (!active || counter >= maxCount) return;
+
+            try {
+                const newIncident = await createIncident(simulationId);
+                if (!active) return;
+
+                setIncidents(prev => [newIncident, ...prev]);
+                counter++;
+
+                await sleep(1000);
+                await fetchNext();
+            } catch (error) {
+                console.error(error);
             }
-        }, 1000);
-        return () => clearInterval(timer);
-    }, [difficulty, simulationId, incidents.length]);
+        };
+
+        fetchNext();
+        return () => { active = false; };
+    }, [difficulty, simulationId]);
 
     return (
         <div className="incidents">
