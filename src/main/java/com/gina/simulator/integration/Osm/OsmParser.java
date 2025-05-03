@@ -1,14 +1,18 @@
 package com.gina.simulator.integration.Osm;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.gina.simulator.integration.features.Building;
-import com.gina.simulator.integration.features.Natural;
-import com.gina.simulator.integration.features.Node;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gina.simulator.integration.features.*;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @NoArgsConstructor
+@Component
 public class OsmParser {
 
     public static final Map<String, String> RUIAN_TYPE_DESCRIPTIONS = Map.ofEntries(
@@ -43,6 +47,14 @@ public class OsmParser {
             Map.entry("29", "stavba odkaliště")
     );
 
+    public static final Map<String, String> TRACK_TYPE_DESCRIPTIONS = Map.ofEntries(
+            Map.entry("grade1", "pevný povrch"),
+            Map.entry("grade2", "většinou pevný povrch"),
+            Map.entry("grade3", "mix pevných a měkkých povrchů"),
+            Map.entry("grade4", "většinou měkky povrch"),
+            Map.entry("grade5", "měkky povrch")
+    );
+
     public Node parseNode(JsonNode el){
         String lon = el.get("lon").asText();
         String lat = el.get("lat").asText();
@@ -56,7 +68,9 @@ public class OsmParser {
         building.setFlats(tags.path("building:flats").asText("není známo"));
         building.setHouseNumber(tags.path("ref:ruian:building").asText("není známo"));
 
-        building.setNodeId(nodes.path(0).asText("není známo"));
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> building.getNodeIds().add(n.asText())));
 
         return building;
     }
@@ -65,12 +79,92 @@ public class OsmParser {
         Natural natural = new Natural();
         natural.setType(tags.path("natural").asText("není známo"));
 
-        natural.setNodeId(nodes.path(0).asText("není známo"));
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> natural.getNodeIds().add(n.asText())));
 
         return natural;
     }
 
+    public Landuse parseLanduse(JsonNode tags, JsonNode nodes){
+        Landuse landuse = new Landuse();
+        landuse.setType(tags.path("landuse").asText("není známo"));
+
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> landuse.getNodeIds().add(n.asText())));
+
+        return landuse;
+    }
+
+    public Highway parseHighway(JsonNode tags, JsonNode nodes){
+        Highway highway = new Highway();
+        highway.setType(tags.path("highway").asText("není známo"));
+        highway.setSmoothness(tags.path("smoothness").asText("není známo"));
+        highway.setSurface(tags.path("surface").asText("není známo"));
+        highway.setTrackType(resolveTrackType(tags.path("tracktype").asText("není známo")));
+
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> highway.getNodeIds().add(n.asText())));
+
+        return highway;
+    }
+
+    public NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse) {
+        ObjectMapper mapper = new ObjectMapper();
+        NearbyFeatures features = new NearbyFeatures();
+
+        try {
+            JsonNode root = mapper.readTree(osmResponse);
+            JsonNode elements = root.get("elements");
+
+            if (elements == null || !elements.isArray()) {
+                return null;
+            }
+
+
+            for (JsonNode el : elements) {
+                String type = el.path("type").asText();
+                JsonNode tags = el.path("tags");
+                JsonNode nodes = el.path("nodes");
+
+                switch (type){
+                    case "node":
+                        String id = el.path("id").asText("není známo");
+                        features.getNodeMap().put(id, parseNode(el));
+                        break;
+                    case "way": // todo: waterway, leisure, amenity, shop, public_transport, tourism
+                        if (tags == null || nodes == null) continue;
+
+                        if (tags.get("building") != null){
+                            features.getBuildings().add(parseBuilding(tags, nodes));
+                        } else if (tags.get("natural") != null) {
+                            features.getNaturals().add(parseNatural(tags, nodes));
+                        } else if (tags.get("landuse") != null) {
+                            features.getLanduses().add(parseLanduse(tags, nodes));
+                        } else if (tags.get("highway") != null) {
+                            features.getHighways().add(parseHighway(tags, nodes));
+                        }
+                        break;
+
+                    default:
+                }
+            }
+
+
+        } catch (Exception e) {
+            log.warn("Chyba při generování promptu.\n {}", e.getMessage());
+        }
+        features.computeCoords();
+        return features;
+    }
+
     private String resolveBuildingType(String typeNumber){
-        return OsmParser.RUIAN_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "Neznámý typ stavby");
+        return OsmParser.RUIAN_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "Není známo");
+    }
+
+    private String resolveTrackType(String typeNumber){
+        return OsmParser.TRACK_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "Není známo");
     }
 }

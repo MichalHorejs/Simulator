@@ -34,8 +34,8 @@ public class IncidentService {
 
         IncidentTemplate incidentTemplate = incidentTemplateService.findRandomTemplate();
 
-        NearbyFeatures nearbyText = osmService.generateNearbyFeatures(incidentTemplate);
-        log.info("\n\nNearby features: {}\n", nearbyText.getNaturals());
+        NearbyFeatures nearbyFeatures = osmService.generateNearbyFeatures(incidentTemplate);
+        System.out.println(nearbyFeatures);
 
         Incident incident = new Incident();
         incident.setSimulation(simulation);

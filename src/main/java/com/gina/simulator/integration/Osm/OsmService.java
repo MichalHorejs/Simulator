@@ -1,7 +1,5 @@
 package com.gina.simulator.integration.Osm;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.integration.features.NearbyFeatures;
 import lombok.extern.slf4j.Slf4j;
@@ -29,63 +27,19 @@ public class OsmService {
 
     RestTemplate restTemplate;
 
-    public OsmService(RestTemplateBuilder builder) {
+    private final OsmParser osmParser;
+
+    public OsmService(RestTemplateBuilder builder, OsmParser osmParser) {
         this.restTemplate = builder.build();
+        this.osmParser = osmParser;
     }
 
     public NearbyFeatures generateNearbyFeatures(IncidentTemplate incidentTemplate) {
         double latitude = Double.parseDouble(incidentTemplate.getAddress().getLatitude());
         double longitude = Double.parseDouble(incidentTemplate.getAddress().getLongitude());
 
-        String nearbyFeatures = obtainNearbyObjectsFromOSM(incidentTemplate);
-        return parsePrivateObjectsFromOSM(nearbyFeatures, latitude, longitude);
-    }
-
-    private NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse, double incidentLat, double incidentLon) {
-        StringBuilder sb = new StringBuilder("Jako civilista vidíš následující okolní objekty:\n");
-        ObjectMapper mapper = new ObjectMapper();
-        OsmParser parser = new OsmParser();
-        NearbyFeatures features = new NearbyFeatures();
-
-        try {
-            JsonNode root = mapper.readTree(osmResponse);
-            JsonNode elements = root.get("elements");
-
-            if (elements == null || !elements.isArray()) {
-                return null;
-            }
-
-
-            for (JsonNode el : elements) {
-                String type = el.path("type").asText();
-
-                switch (type){
-                    case "node":
-                        String id = el.path("id").asText("není známo");
-                        features.getNodeMap().put(id, parser.parseNode(el));
-                        break;
-                    case "way":
-                        JsonNode tags = el.path("tags");
-                        JsonNode nodes = el.path("nodes");
-                        if (tags == null || nodes == null) continue;
-
-                        if (tags.get("building") != null){
-                            features.getBuildings().add(parser.parseBuilding(tags, nodes));
-                        } else if (tags.get("natural") != null) {
-                            features.getNaturals().add(parser.parseNatural(tags, nodes));
-                        }
-                        break;
-
-                    default:
-                }
-            }
-
-
-        } catch (Exception e) {
-            log.warn("Chyba při generování promptu.");
-        }
-
-        return features;
+        String osmResponse = obtainNearbyObjectsFromOSM(incidentTemplate);
+        return osmParser.parsePrivateObjectsFromOSM(osmResponse);
     }
 
     private String obtainNearbyObjectsFromOSM(IncidentTemplate incidentTemplate){

@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Building {
+public class Landuse {
     private String type;
-    private String flats;
-    private String levels;
-    private String houseNumber;
     private String lon;
     private String lat;
     private List<String> nodeIds = new ArrayList<>();
@@ -19,9 +16,6 @@ public class Building {
     public String toString() {
         return "* " +
                 "typ='" + type + '\'' +
-                ", počet bytů='" + flats + '\'' +
-                ", počet pater='" + levels + '\'' +
-                ", číslo domu='" + houseNumber + '\'' +
                 ", souřadnice=" + lon + "," + lat;
     }
 }
