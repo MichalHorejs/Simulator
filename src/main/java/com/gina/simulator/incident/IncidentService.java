@@ -35,7 +35,6 @@ public class IncidentService {
         IncidentTemplate incidentTemplate = incidentTemplateService.findRandomTemplate();
 
         NearbyFeatures nearbyFeatures = osmService.generateNearbyFeatures(incidentTemplate);
-        System.out.println(nearbyFeatures);
 
         Incident incident = new Incident();
         incident.setSimulation(simulation);
@@ -43,6 +42,7 @@ public class IncidentService {
         incident.setState(State.INCOMING);
         incident.setStartTime(LocalDateTime.now());
         incident.setIncidentTemplate(incidentTemplate);
+        incident.setContext(nearbyFeatures.toString());
 
         return incidentRepository.save(incident);
     }

@@ -67,4 +67,10 @@
             <column name="latitude" type="text"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="3" author="horejs">
+        <addColumn tableName="incident">
+            <column name="context" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
