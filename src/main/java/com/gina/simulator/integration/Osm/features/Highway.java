@@ -1,4 +1,4 @@
-package com.gina.simulator.integration.features;
+package com.gina.simulator.integration.Osm.features;
 
 import lombok.Data;
 
@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class Highway {
     private String type;
-    private String smoothness;
     private String surface;
     private String trackType;
     private String startLon;
@@ -21,7 +20,6 @@ public class Highway {
     public String toString() {
         return "* " +
                 "typ='" + type + "'" +
-                ", hladkost='" + smoothness + "'" +
                 ", povrch='" + surface + "'" +
                 ", pevnost/měkkost='" + trackType + "'" +
                 ", souřadnice začátku cesty=" + startLon + "," + startLat +

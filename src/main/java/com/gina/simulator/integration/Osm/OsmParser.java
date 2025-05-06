@@ -2,7 +2,7 @@ package com.gina.simulator.integration.Osm;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gina.simulator.integration.features.*;
+import com.gina.simulator.integration.Osm.features.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -99,10 +99,9 @@ public class OsmParser {
 
     public Highway parseHighway(JsonNode tags, JsonNode nodes){
         Highway highway = new Highway();
-        highway.setType(tags.path("highway").asText("není známo"));
-        highway.setSmoothness(tags.path("smoothness").asText("není známo"));
-        highway.setSurface(tags.path("surface").asText("není známo"));
-        highway.setTrackType(resolveTrackType(tags.path("tracktype").asText("není známo")));
+        highway.setType(tags.get("highway").asText());
+        highway.setSurface(tags.path("surface").asText(""));
+        highway.setTrackType(resolveTrackType(tags.path("tracktype").asText("")));
 
         Optional.ofNullable(nodes)
                 .filter(JsonNode::isArray)
@@ -111,7 +110,7 @@ public class OsmParser {
         return highway;
     }
 
-    public NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse) {
+    public NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse, double lat, double lon) {
         ObjectMapper mapper = new ObjectMapper();
         NearbyFeatures features = new NearbyFeatures();
 
@@ -156,7 +155,7 @@ public class OsmParser {
         } catch (Exception e) {
             log.warn("Chyba při generování promptu.\n {}", e.getMessage());
         }
-        features.computeCoords();
+        features.computeCoords(lat, lon);
         return features;
     }
 

@@ -44,10 +44,12 @@ public class MessageService {
             ));
         }
 
-        String aiReply = openAiClient.askModel(gptMessages)
-                .doOnError(err -> log.error("GPT error:", err))
-                .doOnNext(reply -> log.info("GPT reply: {}", reply))
-                .block();
+//        String aiReply = openAiClient.askModel(gptMessages)
+//                .doOnError(err -> log.error("GPT error:", err))
+//                .doOnNext(reply -> log.info("GPT reply: {}", reply))
+//                .block();
+
+        String aiReply = "Message sent from AI";
 
         Message aiMessage = new Message();
         aiMessage.setIncident(incident);

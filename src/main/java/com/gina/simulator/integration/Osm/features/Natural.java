@@ -1,4 +1,4 @@
-package com.gina.simulator.integration.features;
+package com.gina.simulator.integration.Osm.features;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Landuse {
+public class Natural {
     private String type;
     private String lon;
     private String lat;
@@ -15,7 +15,7 @@ public class Landuse {
     @Override
     public String toString() {
         return "* " +
-                "typ='" + type + '\'' +
+                "typ='" + type + "'" +
                 ", souřadnice=" + lon + "," + lat;
     }
 }
