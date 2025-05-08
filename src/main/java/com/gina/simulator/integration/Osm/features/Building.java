@@ -28,7 +28,7 @@ public class Building {
             sb.append("Počet pater: ").append(levels).append(" ");
         }
         if (Utils.empty(houseNumber) != null) {
-            sb.append("Číslo domu: ").append(houseNumber).append(". ");
+            sb.append("Číslo domu: ").append(houseNumber);
         }
         return sb.toString();
     }

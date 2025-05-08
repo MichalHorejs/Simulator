@@ -17,21 +17,6 @@ public class NearbyFeatures {
     private List<Landuse> landuses = new ArrayList<>();
     private List<Highway> highways = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        StringBuilder text = new StringBuilder("Tvé okolí vypadá následovně:\n");
-
-        text.append("Budovy:\n");
-        buildings.forEach(b -> text.append(b.toString()).append("\n"));
-        text.append("\nPříroda okolo tebe:\n");
-        naturals.forEach(n -> text.append(n.toString()).append("\n"));
-        text.append("\nVyužití území:\n");
-        landuses.forEach(l -> text.append(l.toString()).append("\n"));
-        text.append("\nSilnice, cesty:\n");
-        highways.forEach(h -> text.append(h.toString()).append("\n"));
-
-        return text.toString();
-    }
 
     public void computeCoords(double refLat, double refLon) {
         buildings.forEach(b -> computeNearestDistance(b.getNodeIds(), refLat, refLon, b::setDistance));
@@ -46,11 +31,6 @@ public class NearbyFeatures {
 
         naturals.forEach(n -> setCenter(n.getNodeIds(), n::setLon, n::setLat));
         landuses.forEach(l -> setCenter(l.getNodeIds(), l::setLon, l::setLat));
-        highways.forEach(h -> setEndpoints(
-                h.getNodeIds(),
-                h::setStartLon, h::setStartLat,
-                h::setEndLon,   h::setEndLat
-        ));
     }
 
     public void computeNearestDistance(List<String> nodeIds, double refLat, double refLon, Consumer<String> distanceSetter) {

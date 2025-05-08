@@ -97,15 +97,11 @@ public class OsmParser {
         return landuse;
     }
 
-    public Highway parseHighway(JsonNode tags, JsonNode nodes){
+    public Highway parseHighway(JsonNode tags){
         Highway highway = new Highway();
         highway.setType(tags.get("highway").asText());
         highway.setSurface(tags.path("surface").asText(""));
         highway.setTrackType(resolveTrackType(tags.path("tracktype").asText("")));
-
-        Optional.ofNullable(nodes)
-                .filter(JsonNode::isArray)
-                .ifPresent(array -> array.forEach(n -> highway.getNodeIds().add(n.asText())));
 
         return highway;
     }
@@ -143,7 +139,7 @@ public class OsmParser {
                         } else if (tags.get("landuse") != null) {
                             features.getLanduses().add(parseLanduse(tags, nodes));
                         } else if (tags.get("highway") != null) {
-                            features.getHighways().add(parseHighway(tags, nodes));
+                            features.getHighways().add(parseHighway(tags));
                         }
                         break;
 
