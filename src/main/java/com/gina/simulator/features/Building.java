@@ -1,4 +1,4 @@
-package com.gina.simulator.integration.Osm.features;
+package com.gina.simulator.features;
 
 import com.gina.simulator.utils.Utils;
 import lombok.Data;
@@ -19,16 +19,18 @@ public class Building {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (Utils.empty(type) != null) {
-            sb.append("Typ: ").append(type).append(" ");
+            sb.append("typ: ").append(type).append(" ");
         }
         if (Utils.empty(flats) != null) {
-            sb.append("Počet bytů: ").append(flats).append(" ");
+            sb.append("počet bytů: ").append(flats).append(" ");
         }
         if (Utils.empty(levels) != null) {
-            sb.append("Počet pater: ").append(levels).append(" ");
+            sb.append("počet pater: ").append(levels).append(" ");
         }
         if (Utils.empty(houseNumber) != null) {
-            sb.append("Číslo domu: ").append(houseNumber);
+            sb.append("číslo domu: ").append(houseNumber).append(" ");
+        } if (Utils.empty(distance) != null) {
+            sb.append("vzdálenost: ").append(distance);
         }
         return sb.toString();
     }

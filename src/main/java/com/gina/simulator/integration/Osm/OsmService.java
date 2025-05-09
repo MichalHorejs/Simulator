@@ -1,7 +1,7 @@
 package com.gina.simulator.integration.Osm;
 
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
-import com.gina.simulator.integration.Osm.features.NearbyFeatures;
+import com.gina.simulator.features.NearbyFeatures;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,29 +60,31 @@ public class OsmService {
 
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 
-//        saveResponse(incidentTemplate.getId().toString(), response.getBody());
+//        saveResponse("newApproach", response.getBody());
 
         return response.getBody();
     }
 
-//    private void saveResponse(String fileName, String content) {
-//        try {
-//            Path path = Paths.get(fileName + ".json");
-//            Files.writeString(path, content);
-//            log.info("Odpověď z OSM byla uložena do souboru: {}", path.toAbsolutePath());
-//        } catch (IOException e) {
-//            log.error("Nepodařilo se uložit soubor: {}", e.getMessage());
-//        }
-//    }
+    private void saveResponse(String fileName, String content) {
+        try {
+            Path path = Paths.get(fileName + ".json");
+            Files.writeString(path, content);
+            log.info("Odpověď z OSM byla uložena do souboru: {}", path.toAbsolutePath());
+        } catch (IOException e) {
+            log.error("Nepodařilo se uložit soubor: {}", e.getMessage());
+        }
+    }
 
     private String buildQuery(String latitude, String longitude) {
+        StringBuilder query = new StringBuilder("[out:json];\n");
         String[] features = {
-                "building", "natural", "landuse", "waterway",
+                "building", "waterway",
                 "highway", "leisure", "amenity", "shop",
                 "public_transport"
         };
 
         String wayTemplate = "way(around:%s,%s,%s)[%s]";
+        String endTemplate = "out body;\n>;\nout skel qt;\n";
 
         String clauses = Arrays.stream(features)
                 .flatMap(f -> Stream.of(
@@ -86,9 +92,10 @@ public class OsmService {
                 ))
                 .collect(Collectors.joining(";\n", "", ";"));
 
-        return String.format(
-                "[out:json];\nnode(around:%s,%s,%s);\n(\n%s\n);\nout body;\n>;\nout skel qt;",
-                radius, latitude, longitude, clauses
-        );
+        query.append("\nnode(around:%s,%s,%s);\n(\n%s\n);".formatted(radius, latitude, longitude, clauses)).append(endTemplate);
+        query.append("is_in(%s,%s);\narea._[landuse];\n".formatted(latitude, longitude)).append(endTemplate);
+        query.append("is_in(%s,%s);\narea._[natural];\n".formatted(latitude, longitude)).append(endTemplate);
+
+        return query.toString();
     }
 }

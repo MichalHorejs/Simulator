@@ -6,7 +6,7 @@ import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.incidentTemplate.IncidentTemplateService;
 import com.gina.simulator.integration.Osm.OsmService;
-import com.gina.simulator.integration.Osm.features.NearbyFeatures;
+import com.gina.simulator.features.NearbyFeatures;
 import com.gina.simulator.simulation.Simulation;
 import com.gina.simulator.simulation.SimulationRepository;
 import lombok.RequiredArgsConstructor;

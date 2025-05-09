@@ -1,4 +1,4 @@
-package com.gina.simulator.integration.Osm.features;
+package com.gina.simulator.features;
 
 import lombok.Data;
 
@@ -16,10 +16,15 @@ public class NearbyFeatures {
     private List<Natural> naturals = new ArrayList<>();
     private List<Landuse> landuses = new ArrayList<>();
     private List<Highway> highways = new ArrayList<>();
+    private List<Leisure> leisures = new ArrayList<>();
+    private List<Amenity> amenities = new ArrayList<>();
 
 
     public void computeCoords(double refLat, double refLon) {
         buildings.forEach(b -> computeNearestDistance(b.getNodeIds(), refLat, refLon, b::setDistance));
+        leisures.forEach(l -> computeNearestDistance(l.getNodeIds(), refLat, refLon, l::setDistance));
+        amenities.forEach(a -> computeNearestDistance(a.getNodeIds(), refLat, refLon, a::setDistance));
+
         buildings = buildings.stream()
                 .sorted((b1, b2) -> {
                     double d1 = Double.parseDouble(b1.getDistance().replace("m", ""));
@@ -29,8 +34,24 @@ public class NearbyFeatures {
                 .limit(3)
                 .collect(Collectors.toList());
 
-        naturals.forEach(n -> setCenter(n.getNodeIds(), n::setLon, n::setLat));
-        landuses.forEach(l -> setCenter(l.getNodeIds(), l::setLon, l::setLat));
+        leisures = leisures.stream()
+                .sorted((l1, l2) -> {
+                    double d1 = Double.parseDouble(l1.getDistance().replace("m", ""));
+                    double d2 = Double.parseDouble(l2.getDistance().replace("m", ""));
+                    return Double.compare(d1, d2);
+                })
+                .limit(3)
+                .collect(Collectors.toList());
+
+        amenities = amenities.stream()
+                .sorted((a1, a2) -> {
+                    double d1 = Double.parseDouble(a1.getDistance().replace("m", ""));
+                    double d2 = Double.parseDouble(a2.getDistance().replace("m", ""));
+                    return Double.compare(d1, d2);
+                })
+                .limit(3)
+                .collect(Collectors.toList());
+
     }
 
     public void computeNearestDistance(List<String> nodeIds, double refLat, double refLon, Consumer<String> distanceSetter) {

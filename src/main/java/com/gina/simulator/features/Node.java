@@ -1,4 +1,4 @@
-package com.gina.simulator.integration.Osm.features;
+package com.gina.simulator.features;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

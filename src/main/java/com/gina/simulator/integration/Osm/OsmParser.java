@@ -2,7 +2,7 @@ package com.gina.simulator.integration.Osm;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gina.simulator.integration.Osm.features.*;
+import com.gina.simulator.features.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -75,24 +75,16 @@ public class OsmParser {
         return building;
     }
 
-    public Natural parseNatural(JsonNode tags, JsonNode nodes){
+    public Natural parseNatural(JsonNode tags){
         Natural natural = new Natural();
         natural.setType(tags.path("natural").asText("není známo"));
-
-        Optional.ofNullable(nodes)
-                .filter(JsonNode::isArray)
-                .ifPresent(array -> array.forEach(n -> natural.getNodeIds().add(n.asText())));
 
         return natural;
     }
 
-    public Landuse parseLanduse(JsonNode tags, JsonNode nodes){
+    public Landuse parseLanduse(JsonNode tags){
         Landuse landuse = new Landuse();
         landuse.setType(tags.path("landuse").asText("není známo"));
-
-        Optional.ofNullable(nodes)
-                .filter(JsonNode::isArray)
-                .ifPresent(array -> array.forEach(n -> landuse.getNodeIds().add(n.asText())));
 
         return landuse;
     }
@@ -104,6 +96,34 @@ public class OsmParser {
         highway.setTrackType(resolveTrackType(tags.path("tracktype").asText("")));
 
         return highway;
+    }
+
+    public Leisure parseLeisure(JsonNode tags, JsonNode nodes){
+        Leisure leisure = new Leisure();
+        leisure.setType(tags.get("leisure").asText(""));
+        leisure.setSport(tags.path("sport").asText(""));
+
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> leisure.getNodeIds().add(n.asText())));
+
+        return leisure;
+    }
+
+    private Amenity parseAmenity(JsonNode tags, JsonNode nodes) {
+        Amenity amenity = new Amenity();
+        amenity.setType(tags.get("amenity").asText(""));
+        amenity.setName(tags.path("name").asText(""));
+        amenity.setBuilding(tags.path("building").asText(""));
+        amenity.setBuildingType(resolveBuildingType(tags.path("building:ruian:type").asText("")));
+        amenity.setShelter_type(tags.path("shelter_type").asText(""));
+        amenity.setBench(tags.path("bench").asBoolean());
+
+        Optional.ofNullable(nodes)
+                .filter(JsonNode::isArray)
+                .ifPresent(array -> array.forEach(n -> amenity.getNodeIds().add(n.asText())));
+
+        return amenity;
     }
 
     public NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse, double lat, double lon) {
@@ -132,14 +152,18 @@ public class OsmParser {
                     case "way": // todo: waterway, leisure, amenity, shop, public_transport, tourism
                         if (tags == null || nodes == null) continue;
 
-                        if (tags.get("building") != null){
+                        if (tags.get("building") != null && tags.get("amenity") == null) {
                             features.getBuildings().add(parseBuilding(tags, nodes));
                         } else if (tags.get("natural") != null) {
-                            features.getNaturals().add(parseNatural(tags, nodes));
+                            features.getNaturals().add(parseNatural(tags));
                         } else if (tags.get("landuse") != null) {
-                            features.getLanduses().add(parseLanduse(tags, nodes));
+                            features.getLanduses().add(parseLanduse(tags));
                         } else if (tags.get("highway") != null) {
                             features.getHighways().add(parseHighway(tags));
+                        } else if (tags.get("leisure") != null) {
+                            features.getLeisures().add(parseLeisure(tags, nodes));
+                        } else if (tags.get("amenity") != null) {
+                            features.getAmenities().add(parseAmenity(tags, nodes));
                         }
                         break;
 
@@ -156,10 +180,10 @@ public class OsmParser {
     }
 
     private String resolveBuildingType(String typeNumber){
-        return OsmParser.RUIAN_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "Není známo");
+        return OsmParser.RUIAN_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "");
     }
 
     private String resolveTrackType(String typeNumber){
-        return OsmParser.TRACK_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "Není známo");
+        return OsmParser.TRACK_TYPE_DESCRIPTIONS.getOrDefault(typeNumber, "");
     }
 }
