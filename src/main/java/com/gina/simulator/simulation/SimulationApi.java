@@ -1,9 +1,10 @@
 package com.gina.simulator.simulation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/simulation")
@@ -11,11 +12,6 @@ import java.util.UUID;
 public class SimulationApi {
 
     private final SimulationService simulationService;
-
-    @GetMapping("active/{id}")
-    public boolean active(@PathVariable UUID id) {
-        return simulationService.isActive(id);
-    }
 
     @PostMapping("start")
     public Simulation startSimulation(

@@ -19,7 +19,7 @@ public class IncidentTemplate {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String title;
+    private String title; // todo: remove
 
     private String specification;
 

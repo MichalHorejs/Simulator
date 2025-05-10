@@ -2,6 +2,7 @@ import React from 'react';
 import './IncidentDetail.css'
 import { Incident } from '../incidents/Incidents';
 import Chat from "../chat/Chat.tsx";
+import Form from '../form/Form.tsx';
 
 interface IncidentDetailProps {
     incident: Incident;
@@ -15,7 +16,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident }) => {
                     <Chat key={incident.id} incidentId={incident.id} />
                 </div>
                 <div className="form-container">
-                    <h3>Formulář</h3>
+                    <Form incidentId={incident.id} />
                 </div>
             </div>
             <div className="map-container">

@@ -21,7 +21,7 @@ const Chat: React.FC<ChatProps> = ({ incidentId }) => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                let messagesFetched = await getMessages(incidentId);
+                const messagesFetched = await getMessages(incidentId);
                 messagesFetched.sort(
                     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
                 setMessages(messagesFetched);

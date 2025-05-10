@@ -36,5 +36,4 @@ const finishSimulation = async (id: string) => {
     return await response.json();
 }
 
-export { startSimulation };
-export { finishSimulation };
+export { startSimulation, finishSimulation };
