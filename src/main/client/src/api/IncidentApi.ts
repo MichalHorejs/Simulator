@@ -1,5 +1,6 @@
 import {Env} from "../Env.ts";
 import {authenticatedFetch} from "./AuthenticatedFetch.ts";
+import {FormData} from "../components/form/Form.tsx";
 
 const createIncident = async (simulationId: string) => {
 
@@ -15,4 +16,26 @@ const createIncident = async (simulationId: string) => {
     return await response.json();
 }
 
-export { createIncident };
+const saveIncident = async (incidentId: string, incidentData: FormData) => {
+    const payload = {
+        category: incidentData.category,
+        subcategory: incidentData.subcategory,
+        specification: incidentData.specification,
+        cars: incidentData.cars,
+        address: {
+            district: incidentData.district,
+            municipality: incidentData.municipality
+        }
+    };
+    const response = await authenticatedFetch(`${Env.API_BASE_URL}/simulation/incident/${incidentId}/save`, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        throw new Error('Chyba při ukládání incidentu');
+    }
+    return await response.json();
+}
+
+export { createIncident, saveIncident };

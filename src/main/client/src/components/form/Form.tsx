@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { getCategories, Category, getSubcategories, Subcategory, getDistricts, getMunicipalities } from "../../api/FormApi";
+import { saveIncident} from "../../api/IncidentApi.ts";
+import { getCategories, Category, getSubcategories, Subcategory, getDistricts, getMunicipalities } from "../../api/FormApi.ts";
 import "./Form.css"
 
-interface FormData {
+export interface FormData {
     category: string;
     subcategory: string;
     district: string;
@@ -79,10 +80,29 @@ const Form: React.FC<FormProps> = ({ incidentId }) => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const payload = { incidentId, ...formData };
-        console.log("Odesláno:", payload);
+        const payload = new FormData();
+
+        payload.append("incidentId", incidentId);
+        payload.append("category", formData.category);
+        payload.append("subcategory", formData.subcategory);
+        payload.append("district", formData.district);
+        payload.append("municipality", formData.municipality);
+        payload.append("urgency", formData.urgency);
+
+        formData.cars.forEach(car => {
+            payload.append("cars", car);
+        });
+
+        payload.append("specification", formData.specification);
+
+        try {
+            const result = await saveIncident(incidentId, formData);
+            console.log("Incident uložen:", result);
+        } catch (error) {
+            console.error("Chyba při ukládání incidentu:", error);
+        }
     };
 
     return (

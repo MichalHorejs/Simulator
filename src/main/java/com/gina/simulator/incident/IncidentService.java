@@ -1,5 +1,6 @@
 package com.gina.simulator.incident;
 
+import com.gina.simulator.address.Address;
 import com.gina.simulator.aiContext.AiContextGenerator;
 import com.gina.simulator.enums.State;
 import com.gina.simulator.exception.EntityNotFoundException;
@@ -47,6 +48,28 @@ public class IncidentService {
         incident.setContext(aiContextGenerator.generateContext(nearbyFeatures, incidentTemplate));
 
         return incidentRepository.save(incident);
+    }
+
+    @Transactional
+    public Incident saveIncident(UUID incidentId, Incident incidentData) {// todo: cars
+        Incident incident = incidentRepository.findById(incidentId)
+                .orElseThrow(() -> new EntityNotFoundException(Incident.class, incidentId));
+
+        if (incident.getAddress() == null) {
+            incident.setAddress(new Address());
+        }
+
+
+        incident.setCategory(incidentData.getCategory());
+        incident.setSubcategory(incidentData.getSubcategory());
+        incident.getAddress().setDistrict(incidentData.getAddress().getDistrict());
+        incident.getAddress().setMunicipality(incidentData.getAddress().getMunicipality());
+        incident.setSpecification(incidentData.getSpecification());
+        incident.setEndTime(LocalDateTime.now());
+        incident.setState(State.FINISHED);
+
+        return incidentRepository.save(incident);
+
     }
 
     private String generatePhoneNumber() {

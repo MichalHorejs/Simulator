@@ -16,4 +16,9 @@ public class IncidentApi {
     public Incident createIncident(@PathVariable UUID simulationId) {
         return incidentService.create(simulationId);
     }
+
+    @PostMapping("/incident/{incidentId}/save")
+    public Incident saveIncident(@PathVariable UUID incidentId, @RequestBody Incident incidentData) {
+        return incidentService.saveIncident(incidentId, incidentData);
+    }
 }
