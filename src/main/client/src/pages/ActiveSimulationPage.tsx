@@ -76,11 +76,10 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
             {selectedIncident && (
                 <IncidentDetail incident={selectedIncident} onClose={handleCloseDetail} />
             )}
-            <Button
+            <Button className="end-simulation-button"
                 variant="secondary"
                 type="submit"
                 onClick={handleEndSimulation}
-                style={{ position: "fixed", top: "75px", right: "15px", zIndex: 1000 }}
             >
                 Ukončit simulaci
             </Button>

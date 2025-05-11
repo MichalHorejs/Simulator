@@ -67,7 +67,7 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
 
     const handleSelectIncident = (incident: Incident) => {
         if (incident.state === "INCOMING") {
-            const updatedIncident = { ...incident, state: "PROCESSED" };
+            const updatedIncident: Incident = { ...incident, state: "PROCESSED" };
             setIncidents(prev =>
                 prev.map(inc => (inc.id === updatedIncident.id ? updatedIncident : inc))
             );
