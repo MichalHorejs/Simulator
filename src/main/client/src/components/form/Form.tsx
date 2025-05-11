@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { saveIncident} from "../../api/IncidentApi.ts";
 import { getCategories, Category, getSubcategories, Subcategory, getDistricts, getMunicipalities } from "../../api/FormApi.ts";
 import "./Form.css"
+import { Incident } from "../incidents/Incidents.tsx";
 
 export interface FormData {
     category: string;
@@ -16,9 +17,10 @@ export interface FormData {
 
 interface FormProps {
     incidentId: string;
+    onSaved: (updated?: Incident) => void;
 }
 
-const Form: React.FC<FormProps> = ({ incidentId }) => {
+const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
     const [formData, setFormData] = useState<FormData>({
         category: "",
         subcategory: "",
@@ -100,6 +102,7 @@ const Form: React.FC<FormProps> = ({ incidentId }) => {
         try {
             const result = await saveIncident(incidentId, formData);
             console.log("Incident uložen:", result);
+            onSaved(result);
         } catch (error) {
             console.error("Chyba při ukládání incidentu:", error);
         }

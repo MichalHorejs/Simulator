@@ -1,10 +1,10 @@
 import Button from "react-bootstrap/Button";
-import '../index.css'
-import './css/ActiveSimulationPage.css'
-import {finishSimulation} from "../api/SimulationApi.ts";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import Incidents, {Incident} from "../components/incidents/Incidents.tsx";
+import "../index.css";
+import "./css/ActiveSimulationPage.css";
+import { finishSimulation } from "../api/SimulationApi.ts";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Incidents, { Incident } from "../components/incidents/Incidents.tsx";
 import IncidentDetail from "../components/incident-detail/IncidentDetail.tsx";
 
 interface Person {
@@ -27,17 +27,17 @@ interface ActiveSimulationPageProps {
 }
 
 function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
-
     const navigate = useNavigate();
     const [simulation, setSimulation] = useState<Simulation | null>(null);
     const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
+    const [updatedIncident, setUpdatedIncident] = useState<Incident | undefined>(undefined);
 
     useEffect(() => {
-        const simulation = localStorage.getItem("simulation");
-        if (!simulation) {
+        const sim = localStorage.getItem("simulation");
+        if (!sim) {
             navigate("/inactive-simulation");
         } else {
-            setSimulation(JSON.parse(simulation));
+            setSimulation(JSON.parse(sim));
         }
     }, [navigate]);
 
@@ -53,20 +53,35 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
         onEndSimulation();
     };
 
-    if (!simulation) {
-        return null;
-    }
+    const handleCloseDetail = (updated?: Incident) => {
+        if (updated) {
+            setUpdatedIncident(updated);
+        } else {
+            setUpdatedIncident(undefined);
+        }
+        setSelectedIncident(null);
+    };
+
+    if (!simulation) return null;
 
     return (
         <div className="simulation-detail">
-            <Incidents difficulty={simulation.difficulty} simulationId={simulation.id} onSelectIncident={setSelectedIncident} />
-            {selectedIncident && <IncidentDetail incident={selectedIncident} />}
-            <Button variant="secondary" type="submit" onClick={handleEndSimulation} style={{
-                position: "fixed",
-                top: "75px",
-                right: "15px",
-                zIndex: 1000
-            }}>
+            <Incidents
+                difficulty={simulation.difficulty}
+                simulationId={simulation.id}
+                onSelectIncident={setSelectedIncident}
+                updatedIncident={updatedIncident}
+                detailOpen={selectedIncident !== null}
+            />
+            {selectedIncident && (
+                <IncidentDetail incident={selectedIncident} onClose={handleCloseDetail} />
+            )}
+            <Button
+                variant="secondary"
+                type="submit"
+                onClick={handleEndSimulation}
+                style={{ position: "fixed", top: "75px", right: "15px", zIndex: 1000 }}
+            >
                 Ukončit simulaci
             </Button>
         </div>

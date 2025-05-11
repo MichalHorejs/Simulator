@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import Incident from '../incident/Incident';
+import { useEffect, useState, useCallback } from "react";
+import Incident from "../incident/Incident";
 import "./Incidents.css";
-import {createIncident} from "../../api/IncidentApi.ts";
+import { createIncident } from "../../api/IncidentApi.ts";
 
 export interface Incident {
     id: string;
@@ -16,12 +16,14 @@ interface IncidentsProps {
     simulationId: string;
     difficulty: string;
     onSelectIncident?: (incident: Incident) => void;
+    updatedIncident?: Incident;
+    detailOpen: boolean;
 }
 
-function Incidents({ simulationId, difficulty, onSelectIncident }: IncidentsProps) {
+function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident, detailOpen }: IncidentsProps) {
     const [incidents, setIncidents] = useState<Incident[]>([]);
 
-    const getMaxCount = (): number => {
+    const getMaxCount = useCallback((): number => {
         let count = 1;
         if (difficulty === "EASIEST") count = 2;
         else if (difficulty === "EASY") count = 3;
@@ -29,25 +31,21 @@ function Incidents({ simulationId, difficulty, onSelectIncident }: IncidentsProp
         else if (difficulty === "HARD") count = 7;
         else if (difficulty === "HARDEST") count = 9;
         return count;
-    };
+    }, [difficulty]);
 
     useEffect(() => {
         let active = true;
         let counter = 0;
         const maxCount = getMaxCount();
-
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
         const fetchNext = async () => {
             if (!active || counter >= maxCount) return;
-
             try {
                 const newIncident = await createIncident(simulationId);
                 if (!active) return;
-
                 setIncidents(prev => [newIncident, ...prev]);
                 counter++;
-
                 await sleep(1000);
                 await fetchNext();
             } catch (error) {
@@ -57,12 +55,26 @@ function Incidents({ simulationId, difficulty, onSelectIncident }: IncidentsProp
 
         fetchNext();
         return () => { active = false; };
-    }, [difficulty, simulationId]);
+    }, [difficulty, simulationId, getMaxCount]);
+
+    useEffect(() => {
+        if (updatedIncident) {
+            setIncidents(prev =>
+                prev.map(inc => (inc.id === updatedIncident.id ? updatedIncident : inc))
+            );
+        }
+    }, [updatedIncident]);
+
+    const handleSelectIncident = (incident: Incident) => {
+        if (onSelectIncident) {
+            onSelectIncident(incident);
+        }
+    };
 
     return (
-        <div className="incidents">
-            {incidents.map((incident) => (
-                <Incident key={incident.id} incident={incident} onSelect={onSelectIncident} />
+        <div className="incidents" style={{ pointerEvents: detailOpen ? "none" : "auto" }}>
+            {incidents.map(incident => (
+                <Incident key={incident.id} incident={incident} onSelect={handleSelectIncident} />
             ))}
         </div>
     );

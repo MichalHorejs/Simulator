@@ -6,9 +6,10 @@ import Form from '../form/Form.tsx';
 
 interface IncidentDetailProps {
     incident: Incident;
+    onClose: (updated?: Incident) => void;
 }
 
-const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident }) => {
+const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident, onClose }) => {
     return (
         <div className="incident-detail">
             <div className="top-section">
@@ -16,7 +17,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident }) => {
                     <Chat key={incident.id} incidentId={incident.id} />
                 </div>
                 <div className="form-container">
-                    <Form incidentId={incident.id} />
+                    <Form incidentId={incident.id} onSaved={onClose} />
                 </div>
             </div>
             <div className="map-container">
