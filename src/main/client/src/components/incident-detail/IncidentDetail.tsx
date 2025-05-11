@@ -3,6 +3,7 @@ import './IncidentDetail.css'
 import { Incident } from '../incidents/Incidents';
 import Chat from "../chat/Chat.tsx";
 import Form from '../form/Form.tsx';
+import IncidentMap from "../incident-map/IncidentMap.tsx";
 
 interface IncidentDetailProps {
     incident: Incident;
@@ -21,13 +22,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident, onClose }) =>
                 </div>
             </div>
             <div className="map-container">
-                <h3>Mapa</h3>
-                <h4>Detail Incidentu</h4>
-                <p>ID: {incident.id}</p>
-                <p>Telefonní číslo: {incident.phoneNumber}</p>
-                <p>Stav: {incident.state}</p>
-                <p>Začátek: {incident.startTime}</p>
-                <p>Konec: {incident.endTime}</p>
+                <IncidentMap lat={49.54871346667767} lon={17.088198074587726} />
             </div>
         </div>
     );
