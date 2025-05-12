@@ -59,12 +59,13 @@ public class IncidentService {
             incident.setAddress(new Address());
         }
 
-
         incident.setCategory(incidentData.getCategory());
         incident.setSubcategory(incidentData.getSubcategory());
         incident.getAddress().setDistrict(incidentData.getAddress().getDistrict());
         incident.getAddress().setMunicipality(incidentData.getAddress().getMunicipality());
         incident.setSpecification(incidentData.getSpecification());
+        incident.setVehicleTypes(incidentData.getVehicleTypes());
+
         incident.setEndTime(LocalDateTime.now());
         incident.setState(State.FINISHED);
 

@@ -21,7 +21,7 @@ const saveIncident = async (incidentId: string, incidentData: FormData) => {
         category: incidentData.category,
         subcategory: incidentData.subcategory,
         specification: incidentData.specification,
-        cars: incidentData.cars,
+        vehicleTypes: incidentData.cars,
         address: {
             district: incidentData.district,
             municipality: incidentData.municipality
