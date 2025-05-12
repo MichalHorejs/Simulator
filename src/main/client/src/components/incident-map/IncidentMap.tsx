@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import L from 'leaflet';
+import './IncidentMap.css'
 
 interface IncidentMapProps {
     lat: number;

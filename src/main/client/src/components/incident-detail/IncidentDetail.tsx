@@ -22,7 +22,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident, onClose }) =>
                 </div>
             </div>
             <div className="map-container">
-                <IncidentMap lat={49.54871346667767} lon={17.088198074587726} />
+                <IncidentMap lat={incident.incidentTemplate.address.latitude} lon={incident.incidentTemplate.address.longitude} />
             </div>
         </div>
     );

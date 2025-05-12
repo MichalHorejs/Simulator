@@ -1,10 +1,7 @@
 package com.gina.simulator.incident;
 
 import com.gina.simulator.address.Address;
-import com.gina.simulator.enums.Category;
-import com.gina.simulator.enums.State;
-import com.gina.simulator.enums.Subcategory;
-import com.gina.simulator.enums.Urgency;
+import com.gina.simulator.enums.*;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.simulation.Simulation;
 import jakarta.persistence.*;
@@ -12,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -62,5 +60,9 @@ public class Incident {
 
     private String context;
 
-
+    @ElementCollection(targetClass = VehicleType.class)
+    @CollectionTable(name = "incident_vehicle_type", joinColumns = @JoinColumn(name = "incident_id"))
+    @Column(name = "vehicle_type")
+    @Enumerated(EnumType.STRING)
+    private Set<VehicleType> vehicleTypes;
 }

@@ -13,4 +13,5 @@
     <include file="db/changelog/simulator-incident.xml"/>
     <include file="db/changelog/simulator-message.xml"/>
     <include file="db/changelog/simulator-incidentTemplate-vehicles.xml"/>
+    <include file="db/changelog/simulator-incident-vehicleType.xml"/>
 </databaseChangeLog>

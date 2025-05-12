@@ -3,6 +3,13 @@ import Incident from "../incident/Incident";
 import "./Incidents.css";
 import { createIncident } from "../../api/IncidentApi.ts";
 
+export interface IncidentTemplate {
+    address: {
+        latitude: string;
+        longitude: string;
+    };
+}
+
 export interface Incident {
     id: string;
     simulationId: string;
@@ -10,6 +17,7 @@ export interface Incident {
     state: "INCOMING" | "PROCESSED" | "FINISHED";
     startTime: string;
     endTime?: string | null;
+    incidentTemplate: IncidentTemplate;
 }
 
 interface IncidentsProps {
