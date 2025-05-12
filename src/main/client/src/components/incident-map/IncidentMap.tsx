@@ -6,29 +6,39 @@ import './IncidentMap.css'
 interface IncidentMapProps {
     lat: number;
     lon: number;
+    onLocationChange: (lat: number, lon: number) => void;
 }
 
-const SetZoomOnMarker = ({ lat, lon, showMarker }: { lat: number; lon: number; showMarker: boolean }) => {
+const SetZoomOnMarker = ({ lat, lon, showMarker, initialZoomDone, setInitialZoomDone }: {
+    lat: number;
+    lon: number;
+    showMarker: boolean;
+    initialZoomDone: boolean;
+    setInitialZoomDone: (value: boolean) => void;
+}) => {
     const map = useMap();
 
     useEffect(() => {
-        if (showMarker) {
+        if (showMarker && !initialZoomDone) {
             map.flyTo([lat, lon], 17);
+            setInitialZoomDone(true);
         }
-    }, [showMarker, lat, lon, map]);
+    }, [showMarker, lat, lon, map, initialZoomDone, setInitialZoomDone]);
 
     return null;
 };
 
-const IncidentMap = ({ lat, lon }: IncidentMapProps) => {
+const IncidentMap = ({ lat, lon, onLocationChange }: IncidentMapProps) => {
     const [showMarker, setShowMarker] = useState(false);
     const [loadingText, setLoadingText] = useState("📡 Hledání polohy...");
+    const [initialZoomDone, setInitialZoomDone] = useState(false);
+
 
     useEffect(() => {
         const delay = Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000; // 5–15 s
         const timer = setTimeout(() => {
             setShowMarker(true);
-            setLoadingText(""); // skryj text
+            setLoadingText("");
         }, delay);
 
         return () => clearTimeout(timer);
@@ -47,7 +57,7 @@ const IncidentMap = ({ lat, lon }: IncidentMapProps) => {
                     {loadingText}
                 </div>
             )}
-            <MapContainer center={[49.6, 17.25]} zoom={9} style={{ height: '100%', width: '100%' }}>
+            <MapContainer center={[lat, lon]} zoom={9} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> přispěvatelé'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -57,9 +67,22 @@ const IncidentMap = ({ lat, lon }: IncidentMapProps) => {
                         position={[lat, lon]}
                         icon={markerIcon}
                         draggable
+                        eventHandlers={{
+                            dragend: (e) => {
+                                const marker = e.target;
+                                const position = marker.getLatLng();
+                                onLocationChange(position.lat, position.lng);
+                            }
+                        }}
                     />
                 )}
-                <SetZoomOnMarker lat={lat} lon={lon} showMarker={showMarker} />
+                <SetZoomOnMarker
+                    lat={lat}
+                    lon={lon}
+                    showMarker={showMarker}
+                    initialZoomDone={initialZoomDone}
+                    setInitialZoomDone={setInitialZoomDone}
+                />
             </MapContainer>
         </div>
     );

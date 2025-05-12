@@ -63,6 +63,8 @@ public class IncidentService {
         incident.setSubcategory(incidentData.getSubcategory());
         incident.getAddress().setDistrict(incidentData.getAddress().getDistrict());
         incident.getAddress().setMunicipality(incidentData.getAddress().getMunicipality());
+        incident.getAddress().setLatitude(incidentData.getAddress().getLatitude());
+        incident.getAddress().setLongitude(incidentData.getAddress().getLongitude());
         incident.setSpecification(incidentData.getSpecification());
         incident.setVehicleTypes(incidentData.getVehicleTypes());
 

@@ -5,6 +5,8 @@ import { getCategories, Category, getSubcategories, Subcategory, getDistricts, g
 import "./Form.css"
 import { Incident } from "../incidents/Incidents.tsx";
 
+
+
 export interface FormData {
     category: string;
     subcategory: string;
@@ -18,9 +20,10 @@ export interface FormData {
 interface FormProps {
     incidentId: string;
     onSaved: (updated?: Incident) => void;
+    currentLocation: { lat: number; lon: number };
 }
 
-const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
+const Form: React.FC<FormProps> = ({ incidentId, onSaved, currentLocation }) => {
     const [formData, setFormData] = useState<FormData>({
         category: "",
         subcategory: "",
@@ -36,8 +39,6 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
     const [districts, setDistricts] = useState<string[]>([]);
     const [municipalities, setMunicipalities] = useState<string[]>([]);
     const [vehicles, setVehicles] = useState<VehicleType[]>([]);
-
-
 
     useEffect(() => {
         getCategories()
@@ -92,23 +93,23 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const payload = new FormData();
-
-        payload.append("incidentId", incidentId);
-        payload.append("category", formData.category);
-        payload.append("subcategory", formData.subcategory);
-        payload.append("district", formData.district);
-        payload.append("municipality", formData.municipality);
-        payload.append("urgency", formData.urgency);
-
-        formData.cars.forEach(car => {
-            payload.append("cars", car);
-        });
-
-        payload.append("specification", formData.specification);
+        // const payload = new FormData();
+        //
+        // payload.append("incidentId", incidentId);
+        // payload.append("category", formData.category);
+        // payload.append("subcategory", formData.subcategory);
+        // payload.append("district", formData.district);
+        // payload.append("municipality", formData.municipality);
+        // payload.append("urgency", formData.urgency);
+        //
+        // formData.cars.forEach(car => {
+        //     payload.append("cars", car);
+        // });
+        //
+        // payload.append("specification", formData.specification);
 
         try {
-            const result = await saveIncident(incidentId, formData);
+            const result = await saveIncident(incidentId, { ...formData, currentLocation });
             console.log("Incident uložen:", result);
             onSaved(result);
         } catch (error) {

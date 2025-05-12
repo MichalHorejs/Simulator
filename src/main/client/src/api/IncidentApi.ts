@@ -16,7 +16,10 @@ const createIncident = async (simulationId: string) => {
     return await response.json();
 }
 
-const saveIncident = async (incidentId: string, incidentData: FormData) => {
+const saveIncident = async (
+    incidentId: string,
+    incidentData: FormData & { currentLocation: { lat: number; lon: number } }
+) => {
     const payload = {
         category: incidentData.category,
         subcategory: incidentData.subcategory,
@@ -24,7 +27,9 @@ const saveIncident = async (incidentId: string, incidentData: FormData) => {
         vehicleTypes: incidentData.cars,
         address: {
             district: incidentData.district,
-            municipality: incidentData.municipality
+            municipality: incidentData.municipality,
+            latitude: incidentData.currentLocation.lat,
+            longitude: incidentData.currentLocation.lon,
         }
     };
     const response = await authenticatedFetch(`${Env.API_BASE_URL}/simulation/incident/${incidentId}/save`, {
