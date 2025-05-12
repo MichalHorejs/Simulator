@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { saveIncident} from "../../api/IncidentApi.ts";
-import { getCategories, Category, getSubcategories, Subcategory, getDistricts, getMunicipalities } from "../../api/FormApi.ts";
+import { getCategories, Category, getSubcategories, Subcategory, getDistricts, getMunicipalities, VehicleType, getVehicleTypes } from "../../api/FormApi.ts";
 import "./Form.css"
 import { Incident } from "../incidents/Incidents.tsx";
 
@@ -35,6 +35,8 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
     const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
     const [districts, setDistricts] = useState<string[]>([]);
     const [municipalities, setMunicipalities] = useState<string[]>([]);
+    const [vehicles, setVehicles] = useState<VehicleType[]>([]);
+
 
 
     useEffect(() => {
@@ -68,6 +70,12 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
             setMunicipalities([]);
         }
     }, [formData.district]);
+
+    useEffect(() => {
+        getVehicleTypes()
+            .then((data: VehicleType[]) => setVehicles(data))
+            .catch(error => console.error("Chyba při načítání vozidel:", error));
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
@@ -185,9 +193,11 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved }) => {
                         onChange={handleChange}
                         required
                     >
-                        <option value="auto1">Auto 1</option>
-                        <option value="auto2">Auto 2</option>
-                        <option value="auto3">Auto 3</option>
+                        {vehicles.map(vehicle => (
+                            <option key={vehicle.name} value={vehicle.name}>
+                                {vehicle.displayName}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

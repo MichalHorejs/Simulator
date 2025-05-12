@@ -11,6 +11,9 @@ interface IncidentDetailProps {
 }
 
 const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident, onClose }) => {
+    const latitude = parseFloat(incident.incidentTemplate.address.latitude);
+    const longitude = parseFloat(incident.incidentTemplate.address.longitude);
+
     return (
         <div className="incident-detail">
             <div className="top-section">
@@ -22,7 +25,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({ incident, onClose }) =>
                 </div>
             </div>
             <div className="map-container">
-                <IncidentMap lat={incident.incidentTemplate.address.latitude} lon={incident.incidentTemplate.address.longitude} />
+                <IncidentMap lat={latitude} lon={longitude} />
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ package com.gina.simulator.enums;
 
 import com.gina.simulator.enums.dto.CategoryDTO;
 import com.gina.simulator.enums.dto.SubcategoryDTO;
+import com.gina.simulator.enums.dto.VehicleTypeDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,5 +34,16 @@ public class EnumsApi {
         } catch (IllegalArgumentException e) {
             return List.of();
         }
+    }
+
+    @GetMapping("vehicle-types")
+    public List<VehicleTypeDTO> getVehicleTypes() {
+        return Arrays.stream(VehicleType.values())
+                .map(type -> new VehicleTypeDTO(
+                        type.name(),
+                        type.getDisplayName(),
+                        type.getCategory().getDisplayName()
+                ))
+                .collect(Collectors.toList());
     }
 }

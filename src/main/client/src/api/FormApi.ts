@@ -10,6 +10,12 @@ export interface Subcategory {
     displayName: string;
 }
 
+export interface VehicleType {
+    name: string;
+    displayName: string;
+    category: string;
+}
+
 const getCategories = async (): Promise<Category[]> => {
     const response = await fetch(`${Env.API_BASE_URL}/enums/category`);
     if (!response.ok) {
@@ -43,4 +49,13 @@ const getMunicipalities = async (district: string): Promise<string[]> => {
     }
     return await response.json();
 }
-export { getCategories, getSubcategories, getDistricts, getMunicipalities };
+
+const getVehicleTypes = async (): Promise<VehicleType[]> => {
+    const response = await fetch(`${Env.API_BASE_URL}/enums/vehicle-types`);
+    if (!response.ok) {
+        throw new Error("Chyba při načítání vozidel");
+    }
+    return await response.json();
+};
+
+export { getCategories, getSubcategories, getDistricts, getMunicipalities, getVehicleTypes };
