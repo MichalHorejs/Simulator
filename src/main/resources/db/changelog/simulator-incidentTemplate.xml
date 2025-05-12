@@ -39,4 +39,8 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="horejs">
+        <dropColumn tableName="incident_template" columnName="title"/>
+    </changeSet>
 </databaseChangeLog>
