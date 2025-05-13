@@ -2,6 +2,7 @@ package com.gina.simulator.integration.Osm;
 
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.features.NearbyFeatures;
+import com.gina.simulator.integration.ruian.RuianService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -32,10 +33,12 @@ public class OsmService {
     RestTemplate restTemplate;
 
     private final OsmParser osmParser;
+    private final RuianService ruianService;
 
-    public OsmService(RestTemplateBuilder builder, OsmParser osmParser) {
+    public OsmService(RestTemplateBuilder builder, OsmParser osmParser, RuianService ruianService) {
         this.restTemplate = builder.build();
         this.osmParser = osmParser;
+        this.ruianService = ruianService;
     }
 
     public NearbyFeatures generateNearbyFeatures(IncidentTemplate incidentTemplate) {
@@ -43,7 +46,8 @@ public class OsmService {
         double longitude = Double.parseDouble(incidentTemplate.getAddress().getLongitude());
 
         String osmResponse = obtainNearbyObjectsFromOSM(incidentTemplate);
-        return osmParser.parsePrivateObjectsFromOSM(osmResponse, latitude, longitude);
+        NearbyFeatures nf = osmParser.parsePrivateObjectsFromOSM(osmResponse, latitude, longitude);
+        return ruianService.obtainAdditionalInformation(nf);
     }
 
     private String obtainNearbyObjectsFromOSM(IncidentTemplate incidentTemplate){

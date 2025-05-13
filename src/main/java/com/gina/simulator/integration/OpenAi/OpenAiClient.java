@@ -38,7 +38,7 @@ public class OpenAiClient {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        log.info("✅ OpenAI WebClient initialized with baseUrl={} and model={}", baseUrl, model);
+        log.info("OpenAI WebClient initialized with baseUrl={} and model={}", baseUrl, model);
     }
 
     public Mono<String> askModel(List<Map<String, String>> messages) {
