@@ -4,14 +4,16 @@ import com.gina.simulator.address.Address;
 import com.gina.simulator.aiContext.AiContextGenerator;
 import com.gina.simulator.enums.State;
 import com.gina.simulator.exception.EntityNotFoundException;
+import com.gina.simulator.features.NearbyFeatures;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.incidentTemplate.IncidentTemplateService;
 import com.gina.simulator.integration.Osm.OsmService;
-import com.gina.simulator.features.NearbyFeatures;
 import com.gina.simulator.simulation.Simulation;
 import com.gina.simulator.simulation.SimulationRepository;
+import com.gina.simulator.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class IncidentService {
+
+    @Value("${simulation.offset.meters:75}")
+    private int offsetMeters;
 
     private final SimulationRepository simulationRepository;
     private final IncidentRepository incidentRepository;
@@ -40,6 +45,11 @@ public class IncidentService {
         NearbyFeatures nearbyFeatures = osmService.generateNearbyFeatures(incidentTemplate);
 
         Incident incident = new Incident();
+
+        if (incident.getAddress() == null) {
+            incident.setAddress(new Address());
+        }
+
         incident.setSimulation(simulation);
         incident.setPhoneNumber(generatePhoneNumber());
         incident.setState(State.INCOMING);
@@ -47,11 +57,13 @@ public class IncidentService {
         incident.setIncidentTemplate(incidentTemplate);
         incident.setContext(aiContextGenerator.generateContext(nearbyFeatures, incidentTemplate));
 
-        return incidentRepository.save(incident);
+        incidentRepository.save(incident);
+
+        return offsetIncidentCoords(incident);
     }
 
     @Transactional
-    public Incident saveIncident(UUID incidentId, Incident incidentData) {// todo: cars
+    public Incident saveIncident(UUID incidentId, Incident incidentData) {
         Incident incident = incidentRepository.findById(incidentId)
                 .orElseThrow(() -> new EntityNotFoundException(Incident.class, incidentId));
 
@@ -73,6 +85,17 @@ public class IncidentService {
 
         return incidentRepository.save(incident);
 
+    }
+
+    private Incident offsetIncidentCoords(Incident incident) {
+        double lat = Double.parseDouble(incident.getIncidentTemplate().getAddress().getLatitude());
+        double lon = Double.parseDouble(incident.getIncidentTemplate().getAddress().getLongitude());
+
+        double[] ofsetCoords = Utils.offsetCoordinates(lat, lon, offsetMeters);
+        incident.getAddress().setLatitude(String.valueOf(ofsetCoords[0]));
+        incident.getAddress().setLongitude(String.valueOf(ofsetCoords[1]));
+
+        return incident;
     }
 
     private String generatePhoneNumber() {

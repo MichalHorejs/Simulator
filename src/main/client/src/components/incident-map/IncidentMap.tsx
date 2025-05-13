@@ -57,7 +57,7 @@ const IncidentMap = ({ lat, lon, onLocationChange }: IncidentMapProps) => {
                     {loadingText}
                 </div>
             )}
-            <MapContainer center={[lat, lon]} zoom={9} style={{ height: '100%', width: '100%' }}>
+            <MapContainer center={[49.6, 17.25]} zoom={9} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> přispěvatelé'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
