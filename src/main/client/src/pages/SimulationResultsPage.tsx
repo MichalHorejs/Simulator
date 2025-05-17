@@ -4,12 +4,23 @@ import "../index.css";
 import { useEffect, useState } from "react";
 import { getSimulationDetails } from "../api/SimulationApi";
 
-interface IncidentResultsDTO {
+export interface IncidentResultsDTO {
     chosenCategory: string;
     correctCategory: string;
+    chosenSubcategory: string;
+    correctSubcategory: string;
+    chosenUrgency: string;
+    correctUrgency: string;
+    chosenDistrict: string;
+    correctDistrict: string;
+    chosenMuncipality: string;
+    correctMuncipality: string;
+    chosenVehicleTypes: string[];
+    correctVehicleTypes: string[];
+    distance: number;
 }
 
-interface SimulationResultsDTO {
+export interface SimulationResultsDTO {
     username: string;
     result: number;
     difficulty: string;
