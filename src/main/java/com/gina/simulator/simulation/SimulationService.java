@@ -52,8 +52,11 @@ public class SimulationService {
         }
 
         double totalScore = 0.0;
+        double maxScore = 0.0;
 
         for (Incident incident : incidents) {
+            maxScore += 1800;
+
             if (incident.getCallPickedUpTime() == null || incident.getEndTime() == null) {
                 continue;
             }
@@ -72,7 +75,7 @@ public class SimulationService {
 
         }
 
-        return (int) totalScore;
+        return (int) Math.round((totalScore / maxScore) * 5000);
     }
 
     private double computeTimeScore(LocalDateTime startTime, LocalDateTime endTime) {
