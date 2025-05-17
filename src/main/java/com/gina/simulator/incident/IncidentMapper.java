@@ -6,25 +6,44 @@ import com.gina.simulator.utils.Utils;
 import com.gina.simulator.vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Component
 public class IncidentMapper {
 
     public IncidentResultsDTO toIncidentResultsDTO(Incident incident) {
-        IncidentTemplate template = incident.getIncidentTemplate();
 
         IncidentResultsDTO dto = new IncidentResultsDTO();
-        dto.setChosenCategory(incident.getCategory());
+        IncidentTemplate template = incident.getIncidentTemplate();
+
         dto.setCorrectCategory(template.getCategory());
-        dto.setChosenSubcategory(incident.getSubcategory());
         dto.setCorrectSubcategory(template.getSubcategory());
-        dto.setChosenUrgency(incident.getUrgency());
         dto.setCorrectUrgency(template.getUrgency());
-        dto.setChosenDistrict(incident.getAddress().getDistrict());
         dto.setCorrectDistrict(template.getAddress().getDistrict());
-        dto.setChosenMuncipality(incident.getAddress().getMunicipality());
         dto.setCorrectMuncipality(template.getAddress().getMunicipality());
+
+        if (incident.getCategory() == null ||
+                incident.getSubcategory() == null ||
+                incident.getUrgency() == null ||
+                incident.getAddress() == null ||
+                incident.getAddress().getDistrict() == null ||
+                incident.getAddress().getMunicipality() == null ||
+                incident.getAddress().getLatitude() == null ||
+                incident.getAddress().getLongitude() == null ||
+                incident.getIncidentTemplate() == null ||
+                incident.getStartTime() == null ||
+                incident.getCallPickedUpTime() == null ||
+                incident.getEndTime() == null) {
+            return dto;
+        }
+
+        dto.setChosenCategory(incident.getCategory());
+        dto.setChosenSubcategory(incident.getSubcategory());
+        dto.setChosenUrgency(incident.getUrgency());
+        dto.setChosenDistrict(incident.getAddress().getDistrict());
+        dto.setChosenMuncipality(incident.getAddress().getMunicipality());
 
         double selLan = Double.parseDouble(incident.getAddress().getLatitude());
         double selLon = Double.parseDouble(incident.getAddress().getLongitude());
@@ -37,6 +56,13 @@ public class IncidentMapper {
         dto.setCorrectVehicleTypes(template.getVehicles().stream()
                 .map(Vehicle::getType)
                 .collect(Collectors.toSet()));
+
+        LocalDateTime startTime = incident.getStartTime();
+        LocalDateTime endTime = incident.getEndTime();
+        LocalDateTime callPickedUpTime = incident.getCallPickedUpTime();
+
+        dto.setDurationToPickUp((int) Duration.between(startTime, callPickedUpTime).getSeconds());
+        dto.setDurationToServeIncident((int) Duration.between(callPickedUpTime, endTime).getSeconds());
 
         return dto;
     }

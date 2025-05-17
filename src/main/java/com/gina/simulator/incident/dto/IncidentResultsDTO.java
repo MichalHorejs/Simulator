@@ -30,4 +30,7 @@ public class IncidentResultsDTO {
     private Set<VehicleType> correctVehicleTypes;
 
     private int distance;
+
+    private int durationToPickUp;
+    private int durationToServeIncident;
 }

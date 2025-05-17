@@ -29,8 +29,8 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results
                         const isCorrect = correctData.includes(vehicle);
                         return (
                             <span key={index} className={isCorrect ? "match" : "mismatch"}>
-                {vehicle}{index < chosenData.length - 1 ? ", " : ""}
-              </span>
+                                {vehicle}{index < chosenData.length - 1 ? ", " : ""}
+                            </span>
                         );
                     })}
                 </td>
@@ -44,6 +44,12 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results
         if (distance <= 30) return "distance-green";
         if (distance < 125) return "distance-yellow";
         return "distance-red";
+    };
+
+    const getDurationClass = (duration: number) => {
+        if (duration < 60) return "duration-green";
+        if (duration < 180) return "duration-yellow";
+        return "duration-red";
     };
 
     return (
@@ -66,6 +72,18 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results
                                     <td className="label-cell">Vzdálenost</td>
                                     <td className={getDistanceClass(incident.distance)} colSpan={3}>
                                         {incident.distance} m
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="label-cell">Čas k vyzvednutí</td>
+                                    <td className={getDurationClass(incident.durationToPickUp)} colSpan={3}>
+                                        {incident.durationToPickUp} s
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="label-cell">Čas na obsluhu</td>
+                                    <td className={getDurationClass(incident.durationToServeIncident)} colSpan={3}>
+                                        {incident.durationToServeIncident} s
                                     </td>
                                 </tr>
                                 </tbody>

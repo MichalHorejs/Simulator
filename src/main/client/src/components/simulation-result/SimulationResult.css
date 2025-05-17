@@ -33,14 +33,14 @@
     background-color: #f8d7da;
 }
 
-.distance-green {
+.distance-green, .duration-green {
     background-color: #d4edda;
 }
 
-.distance-yellow {
+.distance-yellow, .duration-yellow  {
     background-color: #fff3cd;
 }
 
-.distance-red {
+.distance-red, .duration-red  {
     background-color: #f8d7da;
 }

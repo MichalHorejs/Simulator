@@ -18,6 +18,8 @@ export interface IncidentResultsDTO {
     chosenVehicleTypes: string[];
     correctVehicleTypes: string[];
     distance: number;
+    durationToPickUp: number;
+    durationToServeIncident: number;
 }
 
 export interface SimulationResultsDTO {
