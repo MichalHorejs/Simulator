@@ -1,17 +1,50 @@
+// src/main/client/src/components/simulation-result/SimulationResult.tsx
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
-import {SimulationResultsDTO} from "../../pages/SimulationResultsPage";
+import { SimulationResultsDTO } from "../../pages/SimulationResultsPage";
 import "./SimulationResult.css";
 
-const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({results}) => {
-    const renderRow = (label: string, chosen: string | undefined, correct: string | undefined) => {
-        const chosenValue = chosen && chosen.trim() !== "" ? chosen : "nevyplněno";
-        const correctValue = correct && correct.trim() !== "" ? correct : "nevyplněno";
-        const match = chosenValue === correctValue;
+const getUrgencyText = (urgency: string): string => {
+    switch (urgency) {
+        case "HIGH":
+            return "Vysoká";
+        case "MEDIUM":
+            return "Střední";
+        case "LOW":
+            return "Nízká";
+        default:
+            return urgency;
+    }
+};
+
+const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results }) => {
+    const renderRow = (
+        label: string,
+        chosen: string | undefined,
+        correct: string | undefined
+    ) => {
+        const chosenValue =
+            chosen == null || chosen.trim() === ""
+                ? "nevyplněno"
+                : label === "Naléhavost"
+                    ? getUrgencyText(chosen)
+                    : chosen;
+        const correctValue =
+            correct == null || correct.trim() === ""
+                ? "nevyplněno"
+                : label === "Naléhavost"
+                    ? getUrgencyText(correct)
+                    : correct;
+        const chosenCss =
+            chosen == null || chosen.trim() === ""
+                ? "no-data"
+                : chosenValue === correctValue
+                    ? "match"
+                    : "mismatch";
         return (
             <tr>
                 <td className="label-cell">{label}</td>
-                <td className={match ? "match" : "mismatch"}>{chosenValue}</td>
+                <td className={chosenCss}>{chosenValue}</td>
                 <td className="label-cell">Správně</td>
                 <td>{correctValue}</td>
             </tr>
@@ -26,9 +59,14 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({results}
                 <td className="label-cell">Vozidla</td>
                 <td>
                     {chosenData.map((vehicle, index) => {
-                        const isCorrect = correctData.includes(vehicle);
+                        const cssClass =
+                            vehicle === "nevyplněno"
+                                ? "no-data"
+                                : correctData.includes(vehicle)
+                                    ? "match"
+                                    : "mismatch";
                         return (
-                            <span key={index} className={isCorrect ? "match" : "mismatch"}>
+                            <span key={index} className={cssClass}>
                                 {vehicle}{index < chosenData.length - 1 ? ", " : ""}
                             </span>
                         );
