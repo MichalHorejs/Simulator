@@ -36,4 +36,8 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="2" author="horejs">
+        <dropColumn tableName="simulation" columnName="rating"/>
+    </changeSet>
+
 </databaseChangeLog>

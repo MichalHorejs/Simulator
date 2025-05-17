@@ -34,11 +34,6 @@ public class Person implements UserDetails {
 
     private Role role;
 
-//    @OneToMany
-//    @JsonIgnoreProperties("person")
-//    private List<Simulation> simulations;
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

@@ -22,7 +22,7 @@ public class Simulation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @JsonIgnoreProperties({"password"}) // doesnt work ??
+    @JsonIgnoreProperties({"password"})
     @ManyToOne
     private Person person;
 
@@ -33,8 +33,6 @@ public class Simulation {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
-
-    private int rating;
 
     private Difficulty difficulty;
 }

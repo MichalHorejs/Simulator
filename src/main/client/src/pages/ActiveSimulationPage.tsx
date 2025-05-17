@@ -18,7 +18,6 @@ interface Simulation {
     person: Person;
     startTime: string;
     endTime?: string | null;
-    rating: number;
     difficulty: string;
 }
 
