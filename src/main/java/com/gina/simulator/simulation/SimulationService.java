@@ -96,10 +96,24 @@ public class SimulationService {
         Set<VehicleType> intersection = new HashSet<>(selectedVehicleTypes);
         intersection.retainAll(correctVehicleTypes);
 
-        int numberOfCorrectSelections = intersection.size();
+        int correctMatches = intersection.size();
+        double finalScore = getFinalScore(correctVehicleTypes, selectedVehicleTypes, correctMatches);
 
-        double ratio = (double) numberOfCorrectSelections / correctVehicleTypes.size();
-        return ratio * 200;
+        return Math.max(0, finalScore);
+    }
+
+    private double getFinalScore(Set<VehicleType> correctVehicleTypes, Set<VehicleType> selectedVehicleTypes, int correctMatches) {
+        int totalCorrect = correctVehicleTypes.size();
+        int totalSelected = selectedVehicleTypes.size();
+        int incorrectSelections = totalSelected - correctMatches;
+
+        int maxAllowed = totalCorrect * 2;
+
+        double penaltyRatio = (double) incorrectSelections / (maxAllowed - totalCorrect);
+        penaltyRatio = Math.min(1.0, penaltyRatio);
+
+        double baseScore = ((double) correctMatches / totalCorrect) * 200;
+        return baseScore * (1.0 - penaltyRatio);
     }
 
     private double computeLocationScore(Incident incident, IncidentTemplate template) {
