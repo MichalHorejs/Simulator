@@ -1,9 +1,9 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
-import { SimulationResultsDTO } from "../../pages/SimulationResultsPage";
+import {SimulationResultsDTO} from "../../pages/SimulationResultsPage";
 import "./SimulationResult.css";
 
-const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results }) => {
+const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({results}) => {
     const renderRow = (label: string, chosen: string | undefined, correct: string | undefined) => {
         const chosenValue = chosen && chosen.trim() !== "" ? chosen : "nevyplněno";
         const correctValue = correct && correct.trim() !== "" ? correct : "nevyplněno";
@@ -70,20 +70,41 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results
                                 {renderVehiclesRow(incident.chosenVehicleTypes, incident.correctVehicleTypes)}
                                 <tr>
                                     <td className="label-cell">Vzdálenost</td>
-                                    <td className={getDistanceClass(incident.distance)} colSpan={3}>
-                                        {incident.distance} m
+                                    <td
+                                        className={
+                                            incident.distance == null
+                                                ? "no-data"
+                                                : getDistanceClass(incident.distance)
+                                        }
+                                        colSpan={3}
+                                    >
+                                        {incident.distance == null ? "nevyplněno" : `${incident.distance} m`}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="label-cell">Čas k vyzvednutí</td>
-                                    <td className={getDurationClass(incident.durationToPickUp)} colSpan={3}>
-                                        {incident.durationToPickUp} s
+                                    <td
+                                        className={
+                                            incident.durationToPickUp == null
+                                                ? "no-data"
+                                                : getDurationClass(incident.durationToPickUp)
+                                        }
+                                        colSpan={3}
+                                    >
+                                        {incident.durationToPickUp == null ? "nevyplněno" : `${incident.durationToPickUp} s`}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="label-cell">Čas na obsluhu</td>
-                                    <td className={getDurationClass(incident.durationToServeIncident)} colSpan={3}>
-                                        {incident.durationToServeIncident} s
+                                    <td
+                                        className={
+                                            incident.durationToServeIncident == null
+                                                ? "no-data"
+                                                : getDurationClass(incident.durationToServeIncident)
+                                        }
+                                        colSpan={3}
+                                    >
+                                        {incident.durationToServeIncident == null ? "nevyplněno" : `${incident.durationToServeIncident} s`}
                                     </td>
                                 </tr>
                                 </tbody>

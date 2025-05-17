@@ -23,6 +23,9 @@ public class IncidentMapper {
         dto.setCorrectUrgency(template.getUrgency());
         dto.setCorrectDistrict(template.getAddress().getDistrict());
         dto.setCorrectMuncipality(template.getAddress().getMunicipality());
+        dto.setCorrectVehicleTypes(template.getVehicles().stream()
+                .map(Vehicle::getType)
+                .collect(Collectors.toSet()));
 
         if (incident.getCategory() == null ||
                 incident.getSubcategory() == null ||
@@ -53,9 +56,6 @@ public class IncidentMapper {
         dto.setDistance((int) Utils.calculateDistanceMeters(corLan, corLon, selLan, selLon));
 
         dto.setChosenVehicleTypes(incident.getVehicleTypes());
-        dto.setCorrectVehicleTypes(template.getVehicles().stream()
-                .map(Vehicle::getType)
-                .collect(Collectors.toSet()));
 
         LocalDateTime startTime = incident.getStartTime();
         LocalDateTime endTime = incident.getEndTime();
