@@ -8,11 +8,11 @@ function SimulatorRedirect() {
         <Container className="text-center mt-5 cont">
             <div className="image-text-container">
                 <img src={loginImage} alt="Please log in" className="mb-4" />
-                <h4>You need to log in or register to access this page!</h4>
+                <h4>Pro povolení přístupu na tuto stránku se musíte nejprve přihlásit!</h4>
             </div>
             <div className="d-flex justify-content-center gap-2">
-                <Button href="/login" variant="outline-dark" size="lg">Log In</Button>
-                <Button href="/register" variant="secondary" size="lg">Register</Button>
+                <Button href="/login" variant="outline-dark" size="lg">Přihlášení</Button>
+                <Button href="/register" variant="secondary" size="lg">Registrace</Button>
             </div>
         </Container>
     );

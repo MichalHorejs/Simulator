@@ -38,8 +38,12 @@ function RegisterPage() {
             const data = await response.json();
             authenticate(data);
             navigate('/');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Unknown error occurred");
+            }
         }
     };
 
@@ -48,14 +52,14 @@ function RegisterPage() {
             <Container>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
-                        <h2 className="text-center">Please register:</h2><br />
+                        <h2 className="text-center">Registrujte se prosím:</h2><br />
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId="formUsername" className="mb-3">
-                                <Form.Label column sm={3}>Username</Form.Label>
+                                <Form.Label column sm={3}>Jméno</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Enter username"
+                                        placeholder="Zadejte jméno"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                         required
@@ -64,11 +68,11 @@ function RegisterPage() {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId="formPassword" className="mb-3">
-                                <Form.Label column sm={3}>Password</Form.Label>
+                                <Form.Label column sm={3}>Heslo</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control
                                         type="password"
-                                        placeholder="Enter password"
+                                        placeholder="Zadejte heslo"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
@@ -77,11 +81,11 @@ function RegisterPage() {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId="formConfirmPassword" className="mb-3">
-                                <Form.Label column sm={3}>Confirm Password</Form.Label>
+                                <Form.Label column sm={3}>Potvrzení</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control
                                         type="password"
-                                        placeholder="Confirm password"
+                                        placeholder="Zadejte znovu heslo"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         required
@@ -92,7 +96,7 @@ function RegisterPage() {
                             {error && <p style={{ color: 'red' }}>{error}</p>}
 
                             <Button variant="dark" type="submit" className="w-100">
-                                Register
+                                Registrovat se
                             </Button>
                         </Form>
                     </Col>

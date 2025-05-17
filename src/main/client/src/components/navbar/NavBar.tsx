@@ -16,23 +16,23 @@ function NavBar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto first-nav">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/about">About</Nav.Link>
-                        <Nav.Link as={Link} to="/simulator">Simulator</Nav.Link>
-                        <Nav.Link as={Link} to="/leaderboards" className="nav-link-spacing">Leaderboards</Nav.Link>
+                        <Nav.Link as={Link} to="/">Domů</Nav.Link>
+                        <Nav.Link as={Link} to="/about">O stránce</Nav.Link>
+                        <Nav.Link as={Link} to="/simulator">Simulátor</Nav.Link>
+                        <Nav.Link as={Link} to="/leaderboards" className="nav-link-spacing">Žebříček</Nav.Link>
                     </Nav>
                     <Nav>
                         { username ? (
                             <>
                                 <Nav.Item className="navbar-text mx-2">{username.toUpperCase()}</Nav.Item>
                                 <span className="navbar-text mx-2">/</span>
-                                <Nav.Link className="rounded-border" onClick={logout}>Logout</Nav.Link>
+                                <Nav.Link className="rounded-border" onClick={logout}>Odhlásit</Nav.Link>
                             </>
                         ) : (
                             <>
-                                <Nav.Link as={Link} to="/login">Sign In</Nav.Link>
+                                <Nav.Link as={Link} to="/login">Přihlášení</Nav.Link>
                                 <span className="navbar-text mx-2">/</span>
-                                <Nav.Link as={Link} to="/register" className="rounded-border">Sign Up</Nav.Link>
+                                <Nav.Link as={Link} to="/register" className="rounded-border">Registrace</Nav.Link>
                             </>
                         )}
                     </Nav>

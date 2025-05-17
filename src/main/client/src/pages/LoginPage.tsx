@@ -29,13 +29,13 @@ function LoginPage() {
             <Container>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
-                        <h2 className="text-center">Please log-in:</h2><br/>
+                        <h2 className="text-center">Přihlaste se prosím:</h2><br/>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId="formUsername" className="mb-3">
-                                <Form.Label column sm={3}>Username</Form.Label>
+                                <Form.Label column sm={3}>Jméno</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control type="text"
-                                                  placeholder="Enter username"
+                                                  placeholder="Zadejte jméno"
                                                   value={username}
                                                   onChange={(e) => setUsername(e.target.value)}
                                                   required/>
@@ -43,11 +43,11 @@ function LoginPage() {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId="formPassword" className="mb-3">
-                                <Form.Label column sm={3}>Password</Form.Label>
+                                <Form.Label column sm={3}>Heslo</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control
                                         type="password"
-                                        placeholder="Enter password"
+                                        placeholder="Zadejte heslo"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required/>
@@ -57,7 +57,7 @@ function LoginPage() {
                             {error && <p style={{color: 'red'}}>{error}</p>}
 
                             <Button variant="dark" type="submit" className="w-100">
-                                Login
+                                Přihlásit se
                             </Button>
                         </Form>
                     </Col>
