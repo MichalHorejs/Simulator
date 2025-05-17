@@ -61,7 +61,7 @@ function LeaderboardsPage() {
                     {difficultyOrder.map((diff) => (
                         <Button
                             key={diff}
-                            variant={diff === difficulty ? "primary" : "outline-primary"}
+                            variant={diff === difficulty ? "secondary" : "outline-secondary"}
                             onClick={() => handleDifficultyChange(diff)}
                         >
                             {difficultyLabels[diff]}
@@ -79,7 +79,7 @@ function LeaderboardsPage() {
                 </thead>
                 <tbody>
                 {leaderboards.map((item) => (
-                    <tr key={item.simulationId}>
+                    <tr key={item.id}>
                         <td>{item.username}</td>
                         <td>{item.score}</td>
                         <td>{item.time}</td>

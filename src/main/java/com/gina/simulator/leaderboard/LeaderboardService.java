@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class LeaderboardService {
     }
 
     public Page<Leaderboard> getLeaderboards(Difficulty difficulty, int page, int limit) {
-        return leaderboardRepository.findByDifficulty(difficulty, PageRequest.of(page, limit));
+        return leaderboardRepository.findByDifficulty(
+                difficulty,
+                PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "score"))
+        );
     }
 }
