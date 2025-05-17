@@ -170,9 +170,9 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved, currentLocation }) => 
                     <label>Naléhavost:</label><br/>
                     <select name="urgency" value={formData.urgency} onChange={handleChange} required>
                         <option value="" disabled hidden>Vyberte Naléhavost</option>
-                        <option value="0">Nízká</option>
-                        <option value="1">Střední</option>
-                        <option value="2">Velká</option>
+                        <option value="LOW">Nízká</option>
+                        <option value="MEDIUM">Střední</option>
+                        <option value="HIGH">Velká</option>
                     </select>
                 </div>
             </div>

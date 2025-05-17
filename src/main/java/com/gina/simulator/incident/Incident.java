@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,11 +37,12 @@ public class Incident {
 
     private LocalDateTime endTime;
 
-    /**  Data chosen by user */
-    private String title;
+    private LocalDateTime callPickedUpTime;
 
+    /**  Data chosen by user */
     private String specification;
 
+    @Enumerated(EnumType.STRING)
     private Urgency urgency;
 
     @Enumerated(EnumType.STRING)
@@ -64,5 +66,5 @@ public class Incident {
     @CollectionTable(name = "incident_vehicle_type", joinColumns = @JoinColumn(name = "incident_id"))
     @Column(name = "vehicle_type")
     @Enumerated(EnumType.STRING)
-    private Set<VehicleType> vehicleTypes;
+    private Set<VehicleType> vehicleTypes = new HashSet<>();
 }

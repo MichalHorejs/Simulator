@@ -73,6 +73,7 @@ public class IncidentService {
 
         incident.setCategory(incidentData.getCategory());
         incident.setSubcategory(incidentData.getSubcategory());
+        incident.setUrgency(incidentData.getUrgency());
         incident.getAddress().setDistrict(incidentData.getAddress().getDistrict());
         incident.getAddress().setMunicipality(incidentData.getAddress().getMunicipality());
         incident.getAddress().setLatitude(incidentData.getAddress().getLatitude());
@@ -85,6 +86,16 @@ public class IncidentService {
 
         return incidentRepository.save(incident);
 
+    }
+
+    @Transactional
+    public void incidentPickedUp(UUID incidentId) {
+        Incident incident = incidentRepository.findById(incidentId)
+                .orElseThrow(() -> new EntityNotFoundException(Incident.class, incidentId));
+
+        incident.setState(State.PROCESSED);
+        incident.setCallPickedUpTime(LocalDateTime.now());
+        incidentRepository.save(incident);
     }
 
     private Incident offsetIncidentCoords(Incident incident) {

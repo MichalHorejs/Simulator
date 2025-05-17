@@ -1,5 +1,6 @@
 package com.gina.simulator.features;
 
+import com.gina.simulator.utils.Utils;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -61,70 +62,13 @@ public class NearbyFeatures {
             if (node != null) {
                 double nodeLat = Double.parseDouble(node.getLat());
                 double nodeLon = Double.parseDouble(node.getLon());
-                double distance = calculateDistance(refLat, refLon, nodeLat, nodeLon);
+                double distance = Utils.calculateDistanceMeters(refLat, refLon, nodeLat, nodeLon);
                 if (distance < minDistance) {
                     minDistance = distance;
                 }
             }
         }
         distanceSetter.accept(minDistance + "m");
-    }
-
-    // Metoda pro výpočet vzdálenosti mezi dvěma body pomocí Haversineovy formule
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371000; // Poloměr Země v metrech
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return  Math.round(R * c);
-    }
-
-    private void setCenter(
-            List<String> ids,
-            Consumer<String> lonSetter,
-            Consumer<String> latSetter
-    ) {
-        double sumLon = 0, sumLat = 0;
-        int count = 0;
-
-        for (String id : ids) {
-            Node node = nodeMap.get(id);
-            if (node != null) {
-                sumLon += Double.parseDouble(node.getLon());
-                sumLat += Double.parseDouble(node.getLat());
-                count++;
-            }
-        }
-
-        if (count > 0) {
-            lonSetter.accept(String.valueOf(sumLon / count));
-            latSetter.accept(String.valueOf(sumLat / count));
-        }
-    }
-
-    private void setEndpoints(
-            List<String> ids,
-            Consumer<String> startLonSetter,
-            Consumer<String> startLatSetter,
-            Consumer<String> endLonSetter,
-            Consumer<String> endLatSetter
-    ) {
-        if (ids.isEmpty()) return;
-
-        Node start = nodeMap.get(ids.getFirst());
-        Node end   = nodeMap.get(ids.getLast());
-
-        if (start != null) {
-            startLonSetter.accept(start.getLon());
-            startLatSetter.accept(start.getLat());
-        }
-        if (end != null) {
-            endLonSetter.accept(end.getLon());
-            endLatSetter.accept(end.getLat());
-        }
     }
 
 }

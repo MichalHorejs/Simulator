@@ -73,4 +73,14 @@
             <column name="context" type="text"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="4" author="horejs">
+        <addColumn tableName="incident">
+            <column name="call_picked_up_time" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="5" author="horejs">
+        <dropColumn tableName="incident" columnName="title"/>
+    </changeSet>
 </databaseChangeLog>

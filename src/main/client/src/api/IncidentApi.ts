@@ -23,6 +23,7 @@ const saveIncident = async (
     const payload = {
         category: incidentData.category,
         subcategory: incidentData.subcategory,
+        urgency: incidentData.urgency,
         specification: incidentData.specification,
         vehicleTypes: incidentData.cars,
         address: {
@@ -43,4 +44,13 @@ const saveIncident = async (
     return await response.json();
 }
 
-export { createIncident, saveIncident };
+const incidentPickedUp = async (incidentId: string): Promise<void> => {
+    const response = await authenticatedFetch(`${Env.API_BASE_URL}/simulation/incident/${incidentId}/picked-up`, {
+        method: "POST",
+    });
+    if (!response.ok) {
+        throw new Error("Chyba při volání incidentPickedUp endpoint");
+    }
+};
+
+export { createIncident, saveIncident, incidentPickedUp };

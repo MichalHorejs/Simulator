@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Incident from "../incident/Incident";
 import "./Incidents.css";
-import { createIncident } from "../../api/IncidentApi.ts";
+import { createIncident, incidentPickedUp } from "../../api/IncidentApi.ts";
 
 export interface IncidentTemplate {
     address: {
@@ -61,7 +61,7 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
             }
         };
 
-        fetchNext();
+        void fetchNext();
         return () => { active = false; };
     }, [difficulty, simulationId, getMaxCount]);
 
@@ -75,6 +75,8 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
 
     const handleSelectIncident = (incident: Incident) => {
         if (incident.state === "INCOMING") {
+
+            void incidentPickedUp(incident.id);
             const updatedIncident: Incident = { ...incident, state: "PROCESSED" };
             setIncidents(prev =>
                 prev.map(inc => (inc.id === updatedIncident.id ? updatedIncident : inc))
