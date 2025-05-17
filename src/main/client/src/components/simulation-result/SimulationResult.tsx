@@ -92,7 +92,7 @@ const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results
 
     return (
         <div className="simulation-result-table">
-            <h2>Vaše skore je: {results.result}</h2>
+            <h2>Skóre hráče {results.username} je: {results.result}</h2>
             <Accordion defaultActiveKey="0">
                 {results.incidents.map((incident, idx) => (
                     <Accordion.Item eventKey={idx.toString()} key={idx}>

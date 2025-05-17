@@ -10,7 +10,7 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import SimulatorPage from "./pages/SimulatorPage.tsx";
 import LeaderboardsPage from "./pages/LeaderboardsPage.tsx";
-import SimulationResultsPage from "./pages/SimulationResultsPage.tsx";
+import LeaderboardsDetailPage from "./pages/LeaderboardsDetailPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -40,9 +40,10 @@ const router = createBrowserRouter([
             {
                 path: '/register',
                 element: <RegisterPage/>
-            }, {
-                path: '/simulation-result/:simulationId',
-                element: <SimulationResultsPage/>
+            },
+            {
+                path: '/leaderboards/simulation/:simId',
+                element: <LeaderboardsDetailPage/>
             }
         ]
     }

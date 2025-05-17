@@ -3,6 +3,8 @@ package com.gina.simulator.leaderboard;
 import com.gina.simulator.enums.Difficulty;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,4 +33,7 @@ public class LeaderboardService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid simulation id: " + simId));
     }
 
+    public Page<Leaderboard> getLeaderboards(Difficulty difficulty, int page, int limit) {
+        return leaderboardRepository.findByDifficulty(difficulty, PageRequest.of(page, limit));
+    }
 }
