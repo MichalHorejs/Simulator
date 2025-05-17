@@ -4,9 +4,11 @@ import com.gina.simulator.enums.VehicleType;
 import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.incident.Incident;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
+import com.gina.simulator.leaderboard.Leaderboard;
 import com.gina.simulator.leaderboard.LeaderboardService;
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
+import com.gina.simulator.simulation.dto.SimulationResultsDTO;
 import com.gina.simulator.utils.Utils;
 import com.gina.simulator.vehicle.Vehicle;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class SimulationService {
     private final PersonRepository personRepository;
     private final SimulationRepository simulationRepository;
     private final LeaderboardService leaderboardService;
+    private final SimulationMapper simulationMapper;
 
     @Transactional
     public Simulation startSimulation(Simulation simulation) {
@@ -39,19 +42,29 @@ public class SimulationService {
     }
 
     @Transactional
-    public Simulation finish(Simulation s) {
+    public void finish(Simulation s) {
         Simulation simulation = simulationRepository.findById(s.getId())
                 .orElseThrow(() -> new EntityNotFoundException(Simulation.class, s.getId()));
         simulation.setEndTime(LocalDateTime.now());
 
+        int score = computeRating(simulation);
+
         leaderboardService.save(
                 simulation.getPerson().getUsername(),
                 simulation.getId(),
-                computeRating(simulation),
+                score,
                 simulation.getDifficulty()
         );
 
-        return simulationRepository.save(simulation);
+        simulationRepository.save(simulation);
+    }
+
+    public SimulationResultsDTO getSimulatinDetails(UUID simulationId) {
+        Simulation simulation = simulationRepository.findById(simulationId)
+                .orElseThrow(() -> new EntityNotFoundException(Simulation.class, simulationId));
+
+        Leaderboard leaderboard = leaderboardService.getLeaderboard(simulationId);
+        return simulationMapper.toSimulationResultsDTO(simulation, leaderboard.getScore());
     }
 
     private int computeRating(Simulation simulation){

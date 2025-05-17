@@ -1,10 +1,10 @@
 package com.gina.simulator.simulation;
 
+import com.gina.simulator.simulation.dto.SimulationResultsDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/simulation")
@@ -21,7 +21,12 @@ public class SimulationApi {
     }
 
     @PostMapping("finish")
-    public Simulation finishSimulation(@RequestBody Simulation simulation) {
-        return simulationService.finish(simulation);
+    public void finishSimulation(@RequestBody Simulation simulation) {
+        simulationService.finish(simulation);
+    }
+
+    @GetMapping("{simulationId}/detail")
+    public SimulationResultsDTO getSimulationDetails(@PathVariable UUID simulationId) {
+        return simulationService.getSimulatinDetails(simulationId);
     }
 }

@@ -10,44 +10,48 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import SimulatorPage from "./pages/SimulatorPage.tsx";
 import LeaderboardsPage from "./pages/LeaderboardsPage.tsx";
+import SimulationResultsPage from "./pages/SimulationResultsPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <App/>,
         children: [
             {
                 path: '/',
-                element: <HomePage />,
+                element: <HomePage/>,
             },
             {
                 path: '/about',
-                element: <AboutPage />
+                element: <AboutPage/>
             },
             {
                 path: '/simulator',
-                element: <SimulatorPage />
+                element: <SimulatorPage/>
             },
             {
                 path: '/leaderboards',
-                element: <LeaderboardsPage />
+                element: <LeaderboardsPage/>
             },
             {
                 path: '/login',
-                element: <LoginPage />,
+                element: <LoginPage/>,
             },
             {
                 path: '/register',
-                element: <RegisterPage />
+                element: <RegisterPage/>
+            }, {
+                path: '/simulation-result/:simulationId',
+                element: <SimulationResultsPage/>
             }
         ]
     }
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <AuthProvider>
-          <RouterProvider router={router} />
-      </AuthProvider>
-  </StrictMode>,
+    <StrictMode>
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
+    </StrictMode>,
 )

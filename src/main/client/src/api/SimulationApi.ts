@@ -36,4 +36,13 @@ const finishSimulation = async (id: string) => {
     return await response.json();
 }
 
-export { startSimulation, finishSimulation };
+const getSimulationDetails = async (simulationId: string) => {
+    const response = await authenticatedFetch(`${Env.API_BASE_URL}/simulation/${simulationId}/detail`);
+    if (!response.ok) {
+        console.error(response);
+        throw new Error("Chyba při získávání výsledků simulace");
+    }
+    return await response.json();
+};
+
+export { startSimulation, finishSimulation, getSimulationDetails };

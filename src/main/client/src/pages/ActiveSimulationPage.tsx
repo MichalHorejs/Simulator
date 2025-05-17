@@ -22,7 +22,7 @@ interface Simulation {
 }
 
 interface ActiveSimulationPageProps {
-    onEndSimulation: () => void;
+    onEndSimulation: (simulationId: string) => void;
 }
 
 function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
@@ -43,13 +43,12 @@ function ActiveSimulationPage({ onEndSimulation }: ActiveSimulationPageProps) {
     const handleEndSimulation = async () => {
         if (!simulation) return;
         try {
-            const result = await finishSimulation(simulation.id);
-            console.log(result);
+            await finishSimulation(simulation.id);
             localStorage.removeItem("simulation");
         } catch (error) {
             console.error(error);
         }
-        onEndSimulation();
+        onEndSimulation(simulation.id);
     };
 
     const handleCloseDetail = (updated?: Incident) => {

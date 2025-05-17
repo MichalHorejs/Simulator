@@ -25,4 +25,10 @@ public class LeaderboardService {
 
         leaderboardRepository.save(leaderboard);
     }
+
+    public Leaderboard getLeaderboard(UUID simId) {
+        return leaderboardRepository.findBySimulationId(simId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid simulation id: " + simId));
+    }
+
 }
