@@ -47,10 +47,10 @@ function SimulationResultsPage({ simulationId, onBack }: SimulationResultsPagePr
 
 
     return (
-        <div style={{ margin: "20px" }}>
+        <div style={{ margin: "60px" }}>
             <SimulationResults results={results} />
             <Button variant="secondary" onClick={onBack}>
-                Zpět
+                Nová simulace
             </Button>
         </div>
     );

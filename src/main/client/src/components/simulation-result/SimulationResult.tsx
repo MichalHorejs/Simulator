@@ -1,31 +1,75 @@
-import {Accordion} from "react-bootstrap";
 import React from "react";
-import {SimulationResultsDTO} from "../../pages/SimulationResultsPage.tsx";
+import Accordion from "react-bootstrap/Accordion";
+import { SimulationResultsDTO } from "../../pages/SimulationResultsPage";
+import "./SimulationResult.css";
 
-const SimulationResults: React.FC<{ results: SimulationResultsDTO }> = ({results}) => {
+const SimulationResult: React.FC<{ results: SimulationResultsDTO }> = ({ results }) => {
+    const renderRow = (label: string, chosen: string | undefined, correct: string | undefined) => {
+        const chosenValue = chosen && chosen.trim() !== "" ? chosen : "nevyplněno";
+        const correctValue = correct && correct.trim() !== "" ? correct : "nevyplněno";
+        const match = chosenValue === correctValue;
+        return (
+            <tr>
+                <td className="label-cell">{label}</td>
+                <td className={match ? "match" : "mismatch"}>{chosenValue}</td>
+                <td className="label-cell">Správně</td>
+                <td>{correctValue}</td>
+            </tr>
+        );
+    };
+
+    const renderVehiclesRow = (chosenVehicles: string[], correctVehicles: string[]) => {
+        const chosenData = chosenVehicles && chosenVehicles.length > 0 ? chosenVehicles : ["nevyplněno"];
+        const correctData = correctVehicles && correctVehicles.length > 0 ? correctVehicles : ["nevyplněno"];
+        return (
+            <tr>
+                <td className="label-cell">Vozidla</td>
+                <td>
+                    {chosenData.map((vehicle, index) => {
+                        const isCorrect = correctData.includes(vehicle);
+                        return (
+                            <span key={index} className={isCorrect ? "match" : "mismatch"}>
+                {vehicle}{index < chosenData.length - 1 ? ", " : ""}
+              </span>
+                        );
+                    })}
+                </td>
+                <td className="label-cell">Správně</td>
+                <td>{correctData.join(", ")}</td>
+            </tr>
+        );
+    };
+
+    const getDistanceClass = (distance: number) => {
+        if (distance <= 30) return "distance-green";
+        if (distance < 125) return "distance-yellow";
+        return "distance-red";
+    };
 
     return (
-        <div>
-            <br /><br />
+        <div className="simulation-result-table">
             <h2>Vaše skore je: {results.result}</h2>
             <Accordion defaultActiveKey="0">
-                {results.incidents.map((incident, index) => (
-                    <Accordion.Item eventKey={index.toString()} key={index}>
-                        <Accordion.Header>Incident {index + 1}</Accordion.Header>
+                {results.incidents.map((incident, idx) => (
+                    <Accordion.Item eventKey={idx.toString()} key={idx}>
+                        <Accordion.Header>Incident {idx + 1}</Accordion.Header>
                         <Accordion.Body>
-                            <p>Vybraný atribut: {incident.chosenCategory}</p>
-                            <p>Správný atribut: {incident.correctCategory}</p>
-                            <p>Vybraná subkategorie: {incident.chosenSubcategory}</p>
-                            <p>Správná subkategorie: {incident.correctSubcategory}</p>
-                            <p>Vybraná naléhavost: {incident.chosenUrgency}</p>
-                            <p>Správná naléhavost: {incident.correctUrgency}</p>
-                            <p>Vybraný okres: {incident.chosenDistrict}</p>
-                            <p>Správný okres: {incident.correctDistrict}</p>
-                            <p>Vybraná obec: {incident.chosenMuncipality}</p>
-                            <p>Správná obec: {incident.correctMuncipality}</p>
-                            <p>Vybraná vozidla: {incident.chosenVehicleTypes.join(", ")}</p>
-                            <p>Správná vozidla: {incident.correctVehicleTypes.join(", ")}</p>
-                            <p>Určená vzdálenost od incidentu: {incident.distance} m</p>
+                            <table className="result-table">
+                                <tbody>
+                                {renderRow("Kategorie", incident.chosenCategory, incident.correctCategory)}
+                                {renderRow("Subkategorie", incident.chosenSubcategory, incident.correctSubcategory)}
+                                {renderRow("Naléhavost", incident.chosenUrgency, incident.correctUrgency)}
+                                {renderRow("Okres", incident.chosenDistrict, incident.correctDistrict)}
+                                {renderRow("Obec", incident.chosenMuncipality, incident.correctMuncipality)}
+                                {renderVehiclesRow(incident.chosenVehicleTypes, incident.correctVehicleTypes)}
+                                <tr>
+                                    <td className="label-cell">Vzdálenost</td>
+                                    <td className={getDistanceClass(incident.distance)} colSpan={3}>
+                                        {incident.distance} m
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </Accordion.Body>
                     </Accordion.Item>
                 ))}
@@ -34,4 +78,4 @@ const SimulationResults: React.FC<{ results: SimulationResultsDTO }> = ({results
     );
 };
 
-export default SimulationResults;
+export default SimulationResult;

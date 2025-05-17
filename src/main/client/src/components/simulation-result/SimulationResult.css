@@ -1,0 +1,46 @@
+.simulation-result-table {
+    margin: 20px;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.result-table th {
+    background-color: #f0f0f0;
+    text-align: left;
+    padding: 8px;
+    border-bottom: 2px solid #ccc;
+}
+
+.result-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.label-cell {
+    font-weight: bold;
+    width: 20%;
+}
+
+.match {
+    background-color: #d4edda;
+}
+
+.mismatch {
+    background-color: #f8d7da;
+}
+
+.distance-green {
+    background-color: #d4edda;
+}
+
+.distance-yellow {
+    background-color: #fff3cd;
+}
+
+.distance-red {
+    background-color: #f8d7da;
+}
