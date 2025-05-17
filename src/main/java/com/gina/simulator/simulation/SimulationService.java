@@ -4,6 +4,7 @@ import com.gina.simulator.enums.VehicleType;
 import com.gina.simulator.exception.EntityNotFoundException;
 import com.gina.simulator.incident.Incident;
 import com.gina.simulator.incidentTemplate.IncidentTemplate;
+import com.gina.simulator.leaderboard.LeaderboardService;
 import com.gina.simulator.person.Person;
 import com.gina.simulator.person.PersonRepository;
 import com.gina.simulator.utils.Utils;
@@ -25,6 +26,7 @@ public class SimulationService {
 
     private final PersonRepository personRepository;
     private final SimulationRepository simulationRepository;
+    private final LeaderboardService leaderboardService;
 
     @Transactional
     public Simulation startSimulation(Simulation simulation) {
@@ -41,7 +43,14 @@ public class SimulationService {
         Simulation simulation = simulationRepository.findById(s.getId())
                 .orElseThrow(() -> new EntityNotFoundException(Simulation.class, s.getId()));
         simulation.setEndTime(LocalDateTime.now());
-        simulation.setRating(computeRating(simulation));
+
+        leaderboardService.save(
+                simulation.getPerson().getUsername(),
+                simulation.getId(),
+                computeRating(simulation),
+                simulation.getDifficulty()
+        );
+
         return simulationRepository.save(simulation);
     }
 
