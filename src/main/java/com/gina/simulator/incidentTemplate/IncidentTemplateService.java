@@ -14,7 +14,7 @@ public class IncidentTemplateService {
     private final IncidentTemplateRepository incidentTemplateRepository;
 
     public IncidentTemplate findRandomTemplate(){
-        return incidentTemplateRepository.findById(UUID.fromString("03cf5e9d-4bda-4691-9b17-67f473f005cb"))
+        return incidentTemplateRepository.findById(UUID.fromString("bf2d92d3-cc9b-4250-8100-d41104d605b9"))
                 .orElseThrow(() -> new EntityNotFoundException(IncidentTemplate.class));
 //        return incidentTemplateRepository.findRandomTemplate()
 //                .orElseThrow(() -> new EntityNotFoundException(IncidentTemplate.class));

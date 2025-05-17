@@ -18,8 +18,8 @@ public class IncidentMapper {
         IncidentResultsDTO dto = new IncidentResultsDTO();
         IncidentTemplate template = incident.getIncidentTemplate();
 
-        dto.setCorrectCategory(template.getCategory());
-        dto.setCorrectSubcategory(template.getSubcategory());
+        dto.setCorrectCategory(template.getCategory().getDisplayName());
+        dto.setCorrectSubcategory(template.getSubcategory().getDisplayName());
         dto.setCorrectUrgency(template.getUrgency());
         dto.setCorrectDistrict(template.getAddress().getDistrict());
         dto.setCorrectMuncipality(template.getAddress().getMunicipality());
@@ -42,8 +42,8 @@ public class IncidentMapper {
             return dto;
         }
 
-        dto.setChosenCategory(incident.getCategory());
-        dto.setChosenSubcategory(incident.getSubcategory());
+        dto.setChosenCategory(incident.getCategory().getDisplayName());
+        dto.setChosenSubcategory(incident.getSubcategory().getDisplayName());
         dto.setChosenUrgency(incident.getUrgency());
         dto.setChosenDistrict(incident.getAddress().getDistrict());
         dto.setChosenMuncipality(incident.getAddress().getMunicipality());
