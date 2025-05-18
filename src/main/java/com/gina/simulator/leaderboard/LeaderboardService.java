@@ -37,7 +37,14 @@ public class LeaderboardService {
     public Page<Leaderboard> getLeaderboards(Difficulty difficulty, int page, int limit) {
         return leaderboardRepository.findByDifficulty(
                 difficulty,
-                PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "score"))
+                PageRequest.of(
+                        page,
+                        limit,
+                        Sort.by(
+                                Sort.Order.desc("score"),
+                                Sort.Order.asc("time")
+                        )
+                )
         );
     }
 }

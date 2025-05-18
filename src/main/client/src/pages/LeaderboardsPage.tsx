@@ -35,6 +35,17 @@ function LeaderboardsPage() {
     const limit = 10;
     const navigate = useNavigate();
 
+    const formatDate = (dateStr: string): string => {
+        const date = new Date(dateStr);
+        const day = ("0" + date.getDate()).slice(-2);
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const year = date.getFullYear();
+        const hours = ("0" + date.getHours()).slice(-2);
+        const minutes = ("0" + date.getMinutes()).slice(-2);
+        const seconds = ("0" + date.getSeconds()).slice(-2);
+        return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+    };
+
     const fetchLeaderboards = useCallback(async () => {
         try {
             const data = await getLeaderboards(difficulty, page, limit);
@@ -60,8 +71,8 @@ function LeaderboardsPage() {
     };
 
     return (
-        <div className="leaderboards-container" style={{ padding: "60px", maxWidth: "1280px", margin: "auto" }}>
-            <h2>Leaderboards</h2>
+        <div className="leaderboards-container" style={{ padding: "65px", maxWidth: "1280px", margin: "auto" }}>
+            <h2>Žebříček</h2>
             <div style={{ marginBottom: "20px" }}>
                 <ButtonGroup>
                     {difficultyOrder.map((diff) => (
@@ -89,7 +100,7 @@ function LeaderboardsPage() {
                     <tr key={item.id}>
                         <td>{item.username}</td>
                         <td>{item.score}</td>
-                        <td>{item.time}</td>
+                        <td>{formatDate(item.time)}</td>
                         <td>
                             <Button variant="secondary" onClick={() => handleDetail(item.simulationId)}>
                                 Detail
