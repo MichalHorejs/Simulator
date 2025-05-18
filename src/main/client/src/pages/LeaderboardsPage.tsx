@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Button, Table, ButtonGroup } from "react-bootstrap";
-import { getLeaderboards} from "../api/LeaderboardsApi.ts";
+import { getLeaderboards } from "../api/LeaderboardsApi.ts";
+import { useNavigate} from "react-router-dom";
 
 export interface LeaderboardItem {
     id: string;
@@ -32,6 +33,7 @@ function LeaderboardsPage() {
     const [page, setPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const limit = 10;
+    const navigate = useNavigate();
 
     const fetchLeaderboards = useCallback(async () => {
         try {
@@ -51,6 +53,10 @@ function LeaderboardsPage() {
     const handleDifficultyChange = (diff: string) => {
         setDifficulty(diff);
         setPage(0);
+    };
+
+    const handleDetail = (simulationId: string) => {
+        navigate(`/leaderboards/simulation/${simulationId}`);
     };
 
     return (
@@ -75,6 +81,7 @@ function LeaderboardsPage() {
                     <th>Uživatel</th>
                     <th>Skóre</th>
                     <th>Datum</th>
+                    <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,6 +90,11 @@ function LeaderboardsPage() {
                         <td>{item.username}</td>
                         <td>{item.score}</td>
                         <td>{item.time}</td>
+                        <td>
+                            <Button variant="secondary" onClick={() => handleDetail(item.simulationId)}>
+                                Detail
+                            </Button>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
