@@ -16,7 +16,6 @@ function Incident({ incident, onSelect }: IncidentProps) {
         FINISHED: finishedCall
     };
 
-    // Zakáže kliknutí, pokud incident není ve stavu INCOMING.
     const disabled = incident.state !== "INCOMING";
 
     const showIncident = () => {

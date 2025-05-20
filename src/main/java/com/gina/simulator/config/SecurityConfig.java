@@ -7,6 +7,7 @@ import com.gina.simulator.security.handlers.CustomLogoutHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -54,7 +55,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(req -> req
+                        .requestMatchers(HttpMethod.GET, "/api/leaderboards").permitAll()
                         .requestMatchers("/api/simulation/**").authenticated()
+                        .requestMatchers("/api/leaderboards/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailsService)

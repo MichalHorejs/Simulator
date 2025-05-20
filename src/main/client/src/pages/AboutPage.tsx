@@ -10,23 +10,26 @@ function AboutPage(){
             <div className="paragraph">
                 <img src={profileLogo} alt="Profile" />
                 <p>
-                    Hello, my name is Michael. This page should represent my final thesis called
-                    <i><b> A Training Simulator for Dispatchers with Gamification and the use of Large Pre-trained Language Models</b></i>.
-                    In this project I focus on creating a simulator for dispatchers.
-                    This work hopefully help dispatchers to prepare and train their skills in a safe environment.
-                    But this page should also be for anyone, who would like to became dispatcher some day.
-                    Eventually this website can be even taken as a game literally for everyone and can be played no matter the age.
-                    You can even compare your results with other players or try to beat your own.
+                    Zdravím, jmenuji se Michal. Tato stránka by měla reprezentovat mou diplomovou práci nazvanou
+                    <i><b> Tréninkový simulátor pro dispečery s prvky gamifikace a využitím velkých předtrénovaných jazykových modelů</b></i>.
+                    V tomto projektu se zaměřuji na vytvoření simulátoru pro dispečery.
+                    Doufám, že tato práce pomůže dispečerům připravit se a trénovat své dovednosti v bezpečném prostředí.
+                    Tato stránka by však měla být i pro kohokoliv, kdo by se chtěl jednou stát dispečerem.
+                    Nakonec může být tato webová stránka vnímána doslovně jako hra pro každého a může být hrána bez ohledu na věk.
+                    Můžete dokonce porovnávat své výsledky s ostatními hráči nebo se pokusit překonat své vlastní.
                 </p>
             </div>
             <div className="paragraph-right">
                 <p>
-                    I'm incredibly grateful to<i><b> GINA Software</b></i>, a leading firm specializing in developing advanced software
-                    solutions focused on location tracking, security management, and emergency response systems.
-                    Their expertise has significantly enriched my work by providing critical data and
-                    valuable consultations, enabling me to achieve more accurate simulation and informed decision-making.
-                    I sincerely thank<i><b> Marek Řehůlka</b></i> for support, professionalism, and help, which have been instrumental
-                    for the creation of this project.
+                    Rád bych poděkoval RNDr. Marku Rychlému, Ph.D. za odborné vedení, podporu a vstřícnost během celé práce.
+                    Zároveň vyjadřuji velké díky Marku Řehůlkovi z firmy <i><b> GINA Software</b></i>, který poskytl cenné konzultace
+                    i data, a umožnil mi nahlédnout do reálného prostředí operátorů. GINA Software je brněnská technologická
+                    společnost založená v roce 2010, která se specializuje na vývoj softwarových
+                    řešení pro krizové řízení a koordinaci záchranných složek. Jejich systémy, jako je
+                    <i><b> GINA Central</b></i> a <i><b>  GINA GO</b></i>, jsou navrženy tak, aby poskytovaly přehled
+                    o situaci v reálném čase, usnadňovaly komunikaci a zvyšovaly efektivitu zásahů.
+                    Technologie GINA byly nasazeny při různých krizových situacích, včetně zemětřesení na Haiti,
+                    a jsou využívány organizacemi jako je<i><b> Český červený kříž</b></i>.
                 </p>
                 <img src={firmLogo} alt="Firm Logo" />
             </div>

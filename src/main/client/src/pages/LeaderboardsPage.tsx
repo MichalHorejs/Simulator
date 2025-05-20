@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { Button, Table, ButtonGroup } from "react-bootstrap";
-import { getLeaderboards } from "../api/LeaderboardsApi.ts";
-import { useNavigate} from "react-router-dom";
+import { getLeaderboards, deleteLeaderboard } from "../api/LeaderboardsApi.ts";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/LoginContext.tsx";
 
 export interface LeaderboardItem {
     id: string;
@@ -28,6 +29,7 @@ const difficultyLabels: Record<string, string> = {
 };
 
 function LeaderboardsPage() {
+    const { username } = useAuth();
     const [difficulty, setDifficulty] = useState<string>("EASIEST");
     const [leaderboards, setLeaderboards] = useState<LeaderboardItem[]>([]);
     const [page, setPage] = useState<number>(0);
@@ -49,7 +51,6 @@ function LeaderboardsPage() {
     const fetchLeaderboards = useCallback(async () => {
         try {
             const data = await getLeaderboards(difficulty, page, limit);
-            console.log("Načtená data:", data);
             setLeaderboards(data.content);
             setTotalPages(data.totalPages);
         } catch (error) {
@@ -68,6 +69,16 @@ function LeaderboardsPage() {
 
     const handleDetail = (simulationId: string) => {
         navigate(`/leaderboards/simulation/${simulationId}`);
+    };
+
+    const handleDelete = async (leaderboardId: string) => {
+        if (!window.confirm("Opravdu smazat leaderboard?")) return;
+        try {
+            await deleteLeaderboard(leaderboardId);
+            await fetchLeaderboards();
+        } catch (error) {
+            console.error("Chyba při mazání leaderboardu", error);
+        }
     };
 
     return (
@@ -92,7 +103,7 @@ function LeaderboardsPage() {
                     <th>Uživatel</th>
                     <th>Skóre</th>
                     <th>Datum</th>
-                    <th>Detail</th>
+                    <th>Akce</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -102,9 +113,16 @@ function LeaderboardsPage() {
                         <td>{item.score}</td>
                         <td>{formatDate(item.time)}</td>
                         <td>
-                            <Button variant="secondary" onClick={() => handleDetail(item.simulationId)}>
-                                Detail
-                            </Button>
+                            <ButtonGroup>
+                                <Button variant="secondary" onClick={() => handleDetail(item.simulationId)}>
+                                    Detail
+                                </Button>
+                                {username === "admin" && (
+                                    <Button variant="outline-danger" onClick={() => handleDelete(item.id)}>
+                                        &#10006;
+                                    </Button>
+                                )}
+                            </ButtonGroup>
                         </td>
                     </tr>
                 ))}

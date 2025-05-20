@@ -47,4 +47,8 @@ public class LeaderboardService {
                 )
         );
     }
+
+    public void deleteLeaderBoard(UUID leaderboardId) {
+        leaderboardRepository.deleteById(leaderboardId);
+    }
 }

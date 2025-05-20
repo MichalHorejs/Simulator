@@ -3,10 +3,9 @@ package com.gina.simulator.leaderboard;
 import com.gina.simulator.enums.Difficulty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/leaderboards")
@@ -21,5 +20,10 @@ public class LeaderBoardApi {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit) {
         return leaderboardService.getLeaderboards(difficulty, page, limit);
+    }
+
+    @DeleteMapping("{leaderboardId}")
+    public void deleteLeaderBoard(@PathVariable UUID leaderboardId) {
+        leaderboardService.deleteLeaderBoard(leaderboardId);
     }
 }
