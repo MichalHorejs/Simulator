@@ -66,10 +66,10 @@ public class OsmParser {
 
     public Building parseBuilding(JsonNode tags, JsonNode nodes){
         Building building = new Building();
-        building.setType(resolveBuildingType(tags.path("building:ruian:type").asText("není známo")));
-        building.setLevels(tags.path("building:levels").asText("není známo"));
-        building.setFlats(tags.path("building:flats").asText("není známo"));
-        building.setHouseNumber(tags.path("ref:ruian:building").asText("není známo"));
+        building.setType(resolveBuildingType(tags.path("building:ruian:type").asText("")));
+        building.setLevels(tags.path("building:levels").asText(""));
+        building.setFlats(tags.path("building:flats").asText(""));
+        building.setHouseNumber(tags.path("ref:ruian:building").asText(""));
 
         Optional.ofNullable(nodes)
                 .filter(JsonNode::isArray)
@@ -80,14 +80,14 @@ public class OsmParser {
 
     public Natural parseNatural(JsonNode tags){
         Natural natural = new Natural();
-        natural.setType(tags.path("natural").asText("není známo"));
+        natural.setType(tags.path("natural").asText(""));
 
         return natural;
     }
 
     public Landuse parseLanduse(JsonNode tags){
         Landuse landuse = new Landuse();
-        landuse.setType(tags.path("landuse").asText("není známo"));
+        landuse.setType(tags.path("landuse").asText(""));
 
         return landuse;
     }
@@ -156,7 +156,7 @@ public class OsmParser {
 
                 switch (type){
                     case "node":
-                        String id = el.path("id").asText("není známo");
+                        String id = el.path("id").asText("");
                         features.getNodeMap().put(id, parseNode(el));
                         break;
                     case "way": // todo: waterway, leisure, amenity, shop, public_transport, tourism
