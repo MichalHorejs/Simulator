@@ -14,9 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SimulationApiTests extends AbstractIntegrationTest{
+public class SimulationTests extends AbstractIntegrationTest{
 
     private String simulationId;
+    private String incidentId;
 
     @Test
     @Order(1)
@@ -45,6 +46,53 @@ public class SimulationApiTests extends AbstractIntegrationTest{
 
     @Test
     @Order(2)
+    public void createIncident(){
+        HttpEntity<String> request = new HttpEntity<>(getAuthHeaders());
+        ResponseEntity<Map> response = restTemplate.exchange(
+                getRootUrl("simulation/" + simulationId + "/incident"),
+                HttpMethod.POST,
+                request,
+                Map.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertNotNull(response.getBody());
+        incidentId = response.getBody().get("id").toString();
+    }
+
+    @Test
+    @Order(3)
+    public void saveIncident(){
+        String payload = """
+        {
+            "category": "UNIK_NEBEZPECNYCH_LATEK",
+            "subcategory": "PROVOZNICH_KAPALIN",
+            "urgency": "LOW",
+            "specification": "Detailní popis nehody",
+            "vehicleTypes": ["A"],
+            "address": {
+                "district": "Prostějov",
+                "municipality": "Slatinky",
+                "latitude": 50.0755,
+                "longitude": 14.4378
+            }
+        }
+        """;
+
+        HttpEntity<String> request = new HttpEntity<>(payload, getAuthHeaders());
+        ResponseEntity<Map> response = restTemplate.exchange(
+                getRootUrl("simulation/incident/" + incidentId + "/save"),
+                HttpMethod.POST,
+                request,
+                Map.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertNotNull(response.getBody());
+    }
+
+    @Test
+    @Order(4)
     public void testFinishSimulation() {
         assertThat(simulationId).isNotNull();
         String payload = """
@@ -65,7 +113,7 @@ public class SimulationApiTests extends AbstractIntegrationTest{
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     public void testGetSimulationDetails() {
         assertThat(simulationId).isNotNull();
         HttpEntity<Void> request = new HttpEntity<>(getAuthHeaders());
