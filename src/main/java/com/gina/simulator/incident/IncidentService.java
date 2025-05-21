@@ -55,7 +55,7 @@ public class IncidentService {
         incident.setState(State.INCOMING);
         incident.setStartTime(LocalDateTime.now());
         incident.setIncidentTemplate(incidentTemplate);
-        incident.setContext(aiContextGenerator.generateContext(nearbyFeatures, incidentTemplate));
+        incident.setContext(aiContextGenerator.generateContext(nearbyFeatures, incidentTemplate, simulation.getDifficulty()));
 
         incidentRepository.save(incident);
 
