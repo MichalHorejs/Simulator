@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * DTO for sending both tokens and username in response.
+ */
 @AllArgsConstructor
 @Getter
 public class AuthenticationResponse {

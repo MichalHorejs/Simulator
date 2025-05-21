@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service handling user login, register and token refresh.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -32,7 +35,6 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(Person request) {
-
 
         if (personRepository.existsByUsername(request.getUsername())){
             throw new BadRequestException("User '%s' already exist !".formatted(request.getUsername()));

@@ -25,6 +25,11 @@ public class MessageService {
     private final IncidentRepository incidentRepository;
     private final OpenAiClient openAiClient;
 
+    /**
+     * Gets a new message from user, loads incident context and message history. Then send all to external LLM.
+     * @param message message from user
+     * @return message from LLM
+     */
     @Transactional
     public Message create(Message message) {
         Incident incident = incidentRepository.findById(message.getIncident().getId())
@@ -48,8 +53,6 @@ public class MessageService {
                 .doOnError(err -> log.error("GPT error:", err))
                 .doOnNext(reply -> log.info("GPT reply: {}", reply))
                 .block();
-
-//        String aiReply = "Message sent from AI";
 
         Message aiMessage = new Message();
         aiMessage.setIncident(incident);

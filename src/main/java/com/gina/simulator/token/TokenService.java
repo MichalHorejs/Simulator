@@ -14,6 +14,9 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
 
+/**
+ * Service responsible for token handling.
+ */
 @Service
 @RequiredArgsConstructor
 public class TokenService {

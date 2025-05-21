@@ -14,6 +14,12 @@ import java.util.stream.Collectors;
 @Component
 public class AiContextGenerator {
 
+    /**
+     * Generates human readeable string, that is sent to LLM in prompt as context.
+     * @param nearbyFeatures object to parse data from
+     * @param incidentTemplate template of incident
+     * @return himan readable string
+     */
     public String generateContext(NearbyFeatures nearbyFeatures, IncidentTemplate incidentTemplate) {
         StringBuilder sb = new StringBuilder();
         sb.append("Jsi civilista Karel Novák 43 let, který právě volá na hasičskou tísňovou linku.\n");

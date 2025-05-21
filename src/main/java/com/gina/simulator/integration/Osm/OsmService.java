@@ -1,7 +1,7 @@
 package com.gina.simulator.integration.Osm;
 
-import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.features.NearbyFeatures;
+import com.gina.simulator.incidentTemplate.IncidentTemplate;
 import com.gina.simulator.integration.ruian.RuianService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,15 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Service responsible for communication with Open Street Maps API.
+ */
 @Service
 @Slf4j
 public class OsmService {
@@ -41,6 +40,11 @@ public class OsmService {
         this.ruianService = ruianService;
     }
 
+    /**
+     * Generates incident surrouding info stored in objects.
+     * @param incidentTemplate template of incident
+     * @return object containing information about incident surrounding
+     */
     public NearbyFeatures generateNearbyFeatures(IncidentTemplate incidentTemplate) {
         double latitude = Double.parseDouble(incidentTemplate.getAddress().getLatitude());
         double longitude = Double.parseDouble(incidentTemplate.getAddress().getLongitude());
@@ -63,22 +67,15 @@ public class OsmService {
                 .toUri();
 
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-
-//        saveResponse("newApproach", response.getBody());
-
         return response.getBody();
     }
 
-    private void saveResponse(String fileName, String content) {
-        try {
-            Path path = Paths.get(fileName + ".json");
-            Files.writeString(path, content);
-            log.info("Odpověď z OSM byla uložena do souboru: {}", path.toAbsolutePath());
-        } catch (IOException e) {
-            log.error("Nepodařilo se uložit soubor: {}", e.getMessage());
-        }
-    }
-
+    /**
+     * Generates qurey that OSM understands and which asks for wanted info.
+     * @param latitude latitude of incident
+     * @param longitude longtitude of incident
+     * @return OSM JSON response
+     */
     private String buildQuery(String latitude, String longitude) {
         StringBuilder query = new StringBuilder("[out:json];\n");
         String[] features = {

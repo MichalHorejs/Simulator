@@ -88,6 +88,10 @@ public class IncidentService {
 
     }
 
+    /**
+     * When a user clicks on incident details and wants to process incident.
+     * @param incidentId id of incident
+     */
     @Transactional
     public void incidentPickedUp(UUID incidentId) {
         Incident incident = incidentRepository.findById(incidentId)
@@ -98,6 +102,11 @@ public class IncidentService {
         incidentRepository.save(incident);
     }
 
+    /**
+     * Sends different coordinates to FE. Otherwise, user would get full points without moving a pointer on a map.
+     * @param incident processed incident
+     * @return incident with offset coordinates
+     */
     private Incident offsetIncidentCoords(Incident incident) {
         double lat = Double.parseDouble(incident.getIncidentTemplate().getAddress().getLatitude());
         double lon = Double.parseDouble(incident.getIncidentTemplate().getAddress().getLongitude());

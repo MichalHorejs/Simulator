@@ -14,6 +14,9 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * Enabling requests from Vite test server.
+ */
 @Configuration
 public class SpringConfig implements WebMvcConfigurer {
 

@@ -3,13 +3,14 @@ package com.gina.simulator.features;
 import com.gina.simulator.utils.Utils;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Class responsible for storing data about incident surrounding.
+ */
 @Data
 public class NearbyFeatures {
     private Map<String, Node> nodeMap = new HashMap<>();
@@ -26,33 +27,17 @@ public class NearbyFeatures {
         leisures.forEach(l -> computeNearestDistance(l.getNodeIds(), refLat, refLon, l::setDistance));
         amenities.forEach(a -> computeNearestDistance(a.getNodeIds(), refLat, refLon, a::setDistance));
 
-        buildings = buildings.stream()
-                .sorted((b1, b2) -> {
-                    double d1 = Double.parseDouble(b1.getDistance().replace("m", ""));
-                    double d2 = Double.parseDouble(b2.getDistance().replace("m", ""));
-                    return Double.compare(d1, d2);
-                })
+        buildings = sortAndLimit(buildings, Building::getDistance);
+        leisures = sortAndLimit(leisures, Leisure::getDistance);
+        amenities = sortAndLimit(amenities, Amenity::getDistance);
+    }
+
+    private <T> List<T> sortAndLimit(List<T> list, Function<T, String> getDistance) {
+        return list.stream()
+                .sorted(Comparator.comparingDouble(item ->
+                        Double.parseDouble(getDistance.apply(item).replace("m", ""))))
                 .limit(3)
                 .collect(Collectors.toList());
-
-        leisures = leisures.stream()
-                .sorted((l1, l2) -> {
-                    double d1 = Double.parseDouble(l1.getDistance().replace("m", ""));
-                    double d2 = Double.parseDouble(l2.getDistance().replace("m", ""));
-                    return Double.compare(d1, d2);
-                })
-                .limit(3)
-                .collect(Collectors.toList());
-
-        amenities = amenities.stream()
-                .sorted((a1, a2) -> {
-                    double d1 = Double.parseDouble(a1.getDistance().replace("m", ""));
-                    double d2 = Double.parseDouble(a2.getDistance().replace("m", ""));
-                    return Double.compare(d1, d2);
-                })
-                .limit(3)
-                .collect(Collectors.toList());
-
     }
 
     public void computeNearestDistance(List<String> nodeIds, double refLat, double refLon, Consumer<String> distanceSetter) {

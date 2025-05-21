@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class responsible for storing data about buildings.
+ */
 @Data
 public class Building {
     private String type;

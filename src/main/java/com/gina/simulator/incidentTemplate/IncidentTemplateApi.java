@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controller handling incident template related requests.
+ */
 @RestController
 @RequestMapping("api/incident-template")
 @RequiredArgsConstructor

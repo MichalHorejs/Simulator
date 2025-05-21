@@ -41,6 +41,10 @@ public class SimulationService {
         return simulationRepository.save(simulation);
     }
 
+    /**
+     * Saves finished simulation and saves final score into leaderboard.
+     * @param s finished simulation
+     */
     @Transactional
     public void finish(Simulation s) {
         Simulation simulation = simulationRepository.findById(s.getId())
@@ -67,6 +71,11 @@ public class SimulationService {
         return simulationMapper.toSimulationResultsDTO(simulation, leaderboard.getScore());
     }
 
+    /**
+     * Comuptes final score of simulation.
+     * @param simulation finished simulation
+     * @return final score
+     */
     private int computeRating(Simulation simulation){
         List<Incident> incidents = simulation.getIncidents();
         if (incidents.isEmpty()) {

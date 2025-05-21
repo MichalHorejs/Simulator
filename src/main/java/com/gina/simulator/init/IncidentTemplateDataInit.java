@@ -25,6 +25,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Initiates data from .csv file, that contains incident details.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

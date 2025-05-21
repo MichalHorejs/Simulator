@@ -2,6 +2,9 @@ package com.gina.simulator.utils;
 
 import java.util.Random;
 
+/**
+ * Class responsible for providing additional utilities.
+ */
 public class Utils {
     private static final double METERS_PER_DEGREE_LAT = 111_320;
 
@@ -13,7 +16,10 @@ public class Utils {
         return s == null || s.isBlank();
     }
 
-    // haversine
+    /**
+     * Computes distance of 2 coordinates using haversine.
+     * @return distance in meters
+     */
     public static double calculateDistanceMeters(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371000; // poloměr Země v metrech
         double dLat = Math.toRadians(lat2 - lat1);
@@ -25,6 +31,10 @@ public class Utils {
         return R * c;
     }
 
+    /**
+     * Offsets coordinates in random direction.
+     * @return ofsetted coords
+     */
     public static double[] offsetCoordinates(double lat, double lon, int maxOffsetMeters) {
         Random random = new Random();
         double distance = random.nextDouble() * maxOffsetMeters;

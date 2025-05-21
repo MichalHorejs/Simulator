@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Controller handling leaderboard related requests.
+ */
 @RestController
 @RequestMapping("api/leaderboards")
 @RequiredArgsConstructor
@@ -22,6 +25,10 @@ public class LeaderBoardApi {
         return leaderboardService.getLeaderboards(difficulty, page, limit);
     }
 
+    /**
+     * Only avaible for admin authority.
+     * @param leaderboardId id of leaderboard record
+     */
     @DeleteMapping("{leaderboardId}")
     public void deleteLeaderBoard(@PathVariable UUID leaderboardId) {
         leaderboardService.deleteLeaderBoard(leaderboardId);

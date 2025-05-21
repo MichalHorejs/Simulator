@@ -34,6 +34,7 @@ public class Person implements UserDetails {
 
     private Role role;
 
+    // Spring security related stuff
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

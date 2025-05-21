@@ -17,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * Class responsible for communication with RUIAN
+ */
 @Service
 @Slf4j
 public class RuianService {
@@ -30,6 +33,11 @@ public class RuianService {
         this.restTemplate = builder.build();
     }
 
+    /**
+     * Finds house number for given building.
+     * @param nearbyFeatures info about incident surrounding
+     * @return object with additional info
+     */
     public NearbyFeatures obtainAdditionalInformation(NearbyFeatures nearbyFeatures) {
         List<Building> buildings = nearbyFeatures.getBuildings();
 

@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Controller handling message related requests and communicating with external LLM.
+ */
 @RestController
 @RequestMapping("api/simulation/incident")
 @RequiredArgsConstructor

@@ -16,6 +16,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Class responsible for storing user in Spring Context.
+ */
 @Component
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {

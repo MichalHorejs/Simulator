@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
+/**
+ * Exception handling missing entities in a database.
+ */
 @Slf4j
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(Class<?> clazz) {

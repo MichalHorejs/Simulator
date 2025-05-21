@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Class responsible for communication with OpenAI API.
+ */
 @Component
 @Slf4j
 public class OpenAiClient {
@@ -41,6 +44,11 @@ public class OpenAiClient {
         log.info("OpenAI WebClient initialized with baseUrl={} and model={}", baseUrl, model);
     }
 
+    /**
+     * Sends request for chosen model.
+     * @param messages chat history with context
+     * @return LLM response
+     */
     public Mono<String> askModel(List<Map<String, String>> messages) {
         Map<String, Object> body = Map.of(
                 "model", model,

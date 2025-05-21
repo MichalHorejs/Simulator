@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class responsible for storing data about leisure time objects.
+ */
 @Data
 public class Leisure {
     private String type;

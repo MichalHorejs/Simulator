@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Class responsible for parsing OSM JSON response.
+ */
 @Slf4j
 @NoArgsConstructor
 @Component
@@ -126,6 +129,13 @@ public class OsmParser {
         return amenity;
     }
 
+    /**
+     * Function responsible for parsing JSON response from OSM.
+     * @param osmResponse JSON response
+     * @param lat incident latitude
+     * @param lon incident longtitude
+     * @return object containing information about incident surrounding
+     */
     public NearbyFeatures parsePrivateObjectsFromOSM(String osmResponse, double lat, double lon) {
         ObjectMapper mapper = new ObjectMapper();
         NearbyFeatures features = new NearbyFeatures();

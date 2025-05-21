@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class responsible for storing data about amenities.
+ */
 @Data
 public class Amenity {
     private String type;

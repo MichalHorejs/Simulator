@@ -27,6 +27,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Class responsible for securing endpoints.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,6 +40,9 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomLogoutHandler logoutHandler;
 
+    /**
+     * Enabling requests from Vite test server.
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

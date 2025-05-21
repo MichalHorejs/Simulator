@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Entity that serves as a layout for incident generation.
+ */
 @Entity
 @Data
 @NoArgsConstructor
