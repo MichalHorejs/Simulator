@@ -47,12 +47,12 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
                 maxDelay = 1.45 * 60 * 1000;
                 break;
             case "HARD":
-                minDelay = 1000;
-                maxDelay = 1.5 * 1000;
+                minDelay = 0.75 * 60 * 1000;
+                maxDelay = 1.25 * 60 * 1000;
                 break;
             case "HARDEST":
-                minDelay = 0.5 * 1000;
-                maxDelay = 1000;
+                minDelay = 0.25 * 60 * 1000;
+                maxDelay = 0.75 * 60 * 1000;
                 break;
             default:
                 minDelay = 1000;
