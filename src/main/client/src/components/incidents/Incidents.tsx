@@ -31,6 +31,36 @@ interface IncidentsProps {
 function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident, detailOpen }: IncidentsProps) {
     const [incidents, setIncidents] = useState<Incident[]>([]);
 
+    const getRandomDelay = (difficulty: string): number => {
+        let minDelay: number, maxDelay: number;
+        switch (difficulty) {
+            case "EASIEST":
+                minDelay = 2 * 60 * 1000;
+                maxDelay = 3 * 60 * 1000;
+                break;
+            case "EASY":
+                minDelay = 1.5 * 60 * 1000;
+                maxDelay = 2.5 * 60 * 1000;
+                break;
+            case "MEDIUM":
+                minDelay = 1.25 * 60 * 1000;
+                maxDelay = 1.45 * 60 * 1000;
+                break;
+            case "HARD":
+                minDelay = 1000;
+                maxDelay = 1.5 * 1000;
+                break;
+            case "HARDEST":
+                minDelay = 0.5 * 1000;
+                maxDelay = 1000;
+                break;
+            default:
+                minDelay = 1000;
+                maxDelay = 1000;
+        }
+        return Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+    };
+
     const getMaxCount = useCallback((): number => {
         let count = 1;
         if (difficulty === "EASIEST") count = 2;
@@ -45,7 +75,7 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
         let active = true;
         let counter = 0;
         const maxCount = getMaxCount();
-        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
         const fetchNext = async () => {
             if (!active || counter >= maxCount) return;
@@ -54,7 +84,9 @@ function Incidents({ simulationId, difficulty, onSelectIncident, updatedIncident
                 if (!active) return;
                 setIncidents(prev => [newIncident, ...prev]);
                 counter++;
-                await sleep(1000);
+                // await sleep(1000);
+                const delay = getRandomDelay(difficulty);
+                await new Promise(resolve => setTimeout(resolve, delay));
                 await fetchNext();
             } catch (error) {
                 console.error(error);
