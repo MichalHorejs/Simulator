@@ -93,24 +93,9 @@ const Form: React.FC<FormProps> = ({ incidentId, onSaved, currentLocation }) => 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // const payload = new FormData();
-        //
-        // payload.append("incidentId", incidentId);
-        // payload.append("category", formData.category);
-        // payload.append("subcategory", formData.subcategory);
-        // payload.append("district", formData.district);
-        // payload.append("municipality", formData.municipality);
-        // payload.append("urgency", formData.urgency);
-        //
-        // formData.cars.forEach(car => {
-        //     payload.append("cars", car);
-        // });
-        //
-        // payload.append("specification", formData.specification);
 
         try {
             const result = await saveIncident(incidentId, { ...formData, currentLocation });
-            console.log("Incident uložen:", result);
             onSaved(result);
         } catch (error) {
             console.error("Chyba při ukládání incidentu:", error);

@@ -16,7 +16,6 @@ function InactiveSimulationPage({ user, onStartSimulation }: InactiveSimulationP
     const handleStart = async () => {
         try {
             const simulation = await startSimulation(user, difficulty - 1);
-            console.log(simulation);
             localStorage.setItem("simulation", JSON.stringify(simulation));
             onStartSimulation();
         } catch (error) {

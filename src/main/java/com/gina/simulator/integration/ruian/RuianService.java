@@ -75,7 +75,6 @@ public class RuianService {
                                 String td = row.select("td").text().trim();
 
                                 if (th.contains("Čísla popisná nebo evidenční")) {
-                                    log.info("→ Číslo popisné/evidenční: {}", td);
                                     return td;
                                 }
                             }

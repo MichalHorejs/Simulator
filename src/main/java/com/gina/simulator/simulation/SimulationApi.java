@@ -20,7 +20,6 @@ public class SimulationApi {
     public Simulation startSimulation(
             @RequestBody Simulation simulation
     ) {
-        System.out.println(simulation);
         return simulationService.startSimulation(simulation);
     }
 
